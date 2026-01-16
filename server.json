@@ -1,98 +1,29 @@
 import express from "express";
 
 const app = express();
-const PORT = 4000;
+const PORT = 3000;
 
-// 100+ jokes including love jokes
-const jokes = [
-  // Tech / programmer jokes
-  "Why don’t programmers like nature? Too many bugs 🐛",
-  "Why did the computer catch a cold? It forgot to close its Windows 🪟",
-  "Why do Java developers wear glasses? Because they don’t C# 🤓",
-  "Debugging: Being the detective in a crime movie where you are also the killer 🔍",
-  "Why was the JavaScript developer sad? Because they didn’t know how to 'null' their feelings 😅",
-  "Why did the developer go broke? Because he used up all his cache 💸",
-  "Why did the programmer quit his job? Because he didn't get arrays 😎",
-  "What's a programmer's favorite hangout place? Foo Bar 🍺",
-  "Why do programmers prefer dark mode? Because light attracts bugs 🐞",
-  "There are only 10 types of people in the world: those who understand binary and those who don’t 💻",
-  "Why do Python programmers have low self-esteem? They’re constantly comparing their self to others 🐍",
-  "I would tell you a UDP joke, but you might not get it 🤷",
-  "How many programmers does it take to change a light bulb? None, that's a hardware problem 💡",
-  "Why do programmers hate spaces? They can't handle tabs and spaces at the same time ⌨️",
-  "A SQL query walks into a bar, walks up to two tables and asks, 'Can I join you?' 🍹",
-  "Why did the programmer cross the road? Because he forgot the semicolon 🛣️",
-
-  // General funny jokes
-  "I told my wife she was drawing her eyebrows too high. She looked surprised 😲",
-  "Why don’t skeletons fight each other? They don’t have the guts 💀",
-  "What do you call fake spaghetti? An impasta 🍝",
-  "Why did the scarecrow win an award? Because he was outstanding in his field 🌾",
-  "I told my computer I needed a break, and it said 'No problem, I’ll go to sleep' 💤",
-  "Why don’t scientists trust atoms? Because they make up everything ⚛️",
-  "Parallel lines have so much in common. It’s a shame they’ll never meet ➖",
-  "Why did the tomato blush? Because it saw the salad dressing 🍅",
-  "I asked the librarian if the library had books on paranoia. She whispered, 'They're right behind you…' 📚",
-  "I would tell you a joke about construction, but I’m still working on it 🏗️",
-
-  // Love jokes / romantic humor
-  "Are you Wi-Fi? Because I'm feeling a connection 💖",
-  "Do you have a map? I keep getting lost in your eyes 😍",
-  "Are you French? Because *Eiffel* for you 🗼",
-  "If you were a vegetable, you'd be a cute-cumber 🥒",
-  "Do you like raisins? How do you feel about a date? 🍇❤️",
-  "Are you a magician? Because whenever I look at you, everyone else disappears ✨",
-  "I must be a snowflake, because I've fallen for you ❄️",
-  "Are you a bank loan? Because you have my interest 💰",
-  "Do you believe in love at first sight, or should I walk by again? 👀",
-  "If you were words on a page, you’d be fine print 📖",
-
-  // More funny / pun jokes
-  "I told my friend 10 jokes to get him to laugh. Sadly, no pun in ten did 😅",
-  "I would avoid the sushi if I was you. It’s a little fishy 🍣",
-  "Why don’t some couples go to the gym? Because some relationships don’t work out 🏋️‍♂️",
-  "I used to play piano by ear, but now I use my hands 🎹",
-  "I’m reading a book on anti-gravity. It’s impossible to put down 📖",
-  "Did you hear about the guy who invented Lifesavers? He made a mint 🍬",
-  "Why did the coffee file a police report? It got mugged ☕",
-  "I told a joke about chemistry, but I got no reaction 🧪",
-  "I asked the gym instructor if he could teach me to do the splits. He said, 'How flexible are you?' I said, 'I can’t make Tuesdays' 🤸‍♂️",
-  "Why did the bicycle fall over? Because it was two-tired 🚲",
-
-  // Add more love / mix for total 100
-  "I’m on a seafood diet. I see food and I eat it 🦐",
-  "Love is like pi: natural, irrational, and very important ❤️",
-  "Are you an interior decorator? Because when I saw you, the entire room became beautiful 🏡",
-  "If kisses were snowflakes, I’d send you a blizzard ❄️💋",
-  "Are you a camera? Because every time I look at you, I smile 📸",
-  "I love you a latte ☕❤️",
-  "You must be tired because you’ve been running through my mind all day 🏃‍♂️💭",
-  "Do you have a pencil? Cause I want to erase your past and write our future ✏️",
-  "Are you a parking ticket? Because you’ve got ‘FINE’ written all over you 🚗",
-  "Roses are red, violets are blue, sugar is sweet, and so are you 🌹",
-
-  // (You can continue mixing general, love, and programmer jokes until 100+)
-  "Why did the math book look sad? It had too many problems ➗",
-  "Why did the golfer bring two pairs of pants? In case he got a hole in one ⛳",
-  "What do you call cheese that isn’t yours? Nacho cheese 🧀",
-  "I would tell a joke about pizza, but it’s a little cheesy 🍕",
-  "Why did the cookie go to the doctor? Because it felt crummy 🍪",
-  "What do you call a pile of cats? A meowntain 🐱",
-  "Why can’t your nose be 12 inches long? Because then it would be a foot 👃",
-  "Why did the skeleton go to the party alone? Because he had no body to go with 💀",
-  "I tried to catch fog yesterday. Mist 😅",
-  "Why do cows have hooves instead of feet? Because they lactose 🐄"
-];
-
+// Serve frontend
 app.use(express.static("public"));
 
-// API route to get random joke
-app.get("/api/joke", (req, res) => {
-  const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
-  res.json({ joke: randomJoke });
+// External Jokes API
+app.get("/api/joke", async (req, res) => {
+  try {
+    const response = await fetch(
+      "https://official-joke-api.appspot.com/random_joke"
+    );
+    const data = await response.json();
+
+    res.json({
+      joke: `${data.setup} 🤣 ${data.punchline}`
+    });
+  } catch (error) {
+    res.status(500).json({
+      joke: "Oops! Failed to fetch a joke 😢"
+    });
+  }
 });
 
-// Start server
 app.listen(PORT, () => {
   console.log(`😂 Jokes app running at http://localhost:${PORT}`);
 });
