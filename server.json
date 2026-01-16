@@ -1,0 +1,29 @@
+import express from "express";
+
+const app = express();
+const PORT = 3000;
+
+// Serve frontend
+app.use(express.static("public"));
+
+// External Jokes API
+app.get("/api/joke", async (req, res) => {
+  try {
+    const response = await fetch(
+      "https://official-joke-api.appspot.com/random_joke"
+    );
+    const data = await response.json();
+
+    res.json({
+      joke: `${data.setup} 🤣 ${data.punchline}`
+    });
+  } catch (error) {
+    res.status(500).json({
+      joke: "Oops! Failed to fetch a joke 😢"
+    });
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`😂 Jokes app running at http://localhost:${PORT}`);
+});
