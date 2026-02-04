@@ -18,27 +18,88 @@
     }
     body.dark { background: linear-gradient(135deg, #111, #333); }
     .phone {
-      width: 320px; height: 600px; background: #000; border-radius: 35px;
-      padding: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      width: 320px; 
+      height: 600px; 
+      background: #000; 
+      border-radius: 35px;
+      padding: 15px; 
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      display: flex; 
+      flex-direction: column; 
+      justify-content: space-between;
+      position: relative;
     }
-    .notch { width: 120px; height: 20px; background: #111; border-radius: 0 0 15px 15px; margin: 0 auto 10px; }
+    .notch { 
+      width: 120px; 
+      height: 20px; 
+      background: #111; 
+      border-radius: 0 0 15px 15px; 
+      margin: 0 auto 10px; 
+    }
     .screen {
-      background: #f9fafb; height: 100%; border-radius: 25px; padding: 20px;
-      display: flex; flex-direction: column; justify-content: space-between; text-align: center;
+      background: #f9fafb; 
+      height: 100%; 
+      border-radius: 25px; 
+      padding: 20px;
+      display: flex; 
+      flex-direction: column; 
+      justify-content: space-between; 
+      text-align: center;
       transition: 0.3s;
+      position: relative;
     }
     body.dark .screen { background: #1f1f1f; color: #fff; }
     h1 { font-size: 22px; margin: 10px 0; }
     #joke {
-      font-size: 18px; padding: 15px; background: #fff; border-radius: 15px;
-      min-height: 140px; display: flex; align-items: center; justify-content: center; transition: 0.3s;
+      font-size: 18px; 
+      padding: 15px; 
+      background: #fff; 
+      border-radius: 15px;
+      min-height: 140px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      transition: 0.3s;
+      flex-grow: 1;
     }
     body.dark #joke { background: #333; }
-    button { padding: 15px; border: none; border-radius: 15px; background: #667eea; color: white; font-size: 18px; cursor: pointer; }
+    button { 
+      padding: 15px; 
+      border: none; 
+      border-radius: 15px; 
+      background: #667eea; 
+      color: white; 
+      font-size: 18px; 
+      cursor: pointer; 
+    }
     button:active { transform: scale(0.96); }
-    .controls { display: flex; justify-content: space-between; margin-top: 10px; flex-wrap: wrap; gap: 5px; }
-    .small-btn { font-size: 12px; padding: 8px; background: #444; flex: 1; }
-    .footer { font-size: 12px; color: #888; }
+    .controls { 
+      display: flex; 
+      justify-content: space-between; 
+      margin-top: 10px; 
+      flex-wrap: wrap; 
+      gap: 5px; 
+    }
+    .small-btn { 
+      font-size: 12px; 
+      padding: 8px; 
+      background: #444; 
+      flex: 1; 
+    }
+    .footer { 
+      font-size: 12px; 
+      color: #888; 
+      margin-top: 5px; 
+    }
+    .credit {
+      font-size: 8px; 
+      color: #aaa; 
+      position: absolute; 
+      bottom: 5px; 
+      left: 0; 
+      width: 100%; 
+      text-align: center;
+    }
   </style>
 </head>
 
@@ -60,6 +121,7 @@
     </div>
 
     <div class="footer">Swipe up for new joke</div>
+    <div class="credit">Created by WinTech Technology</div>
   </div>
 </div>
 
@@ -179,10 +241,7 @@ const jokes = {
   ]
 };
 
-function setCategory(cat) {
-  currentCategory = cat;
-  getJoke();
-}
+function setCategory(cat) { currentCategory = cat; getJoke(); }
 
 function getJoke() {
   const categoryJokes = jokes[currentCategory];
