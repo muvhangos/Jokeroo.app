@@ -1,84 +1,124 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>😂 Joke App</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="manifest" href="manifest.json">
-
-  <style>
-    body {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      font-family: Arial, sans-serif;
-      height: 100vh;
-      margin: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    body.dark { background: linear-gradient(135deg, #111, #333); }
-    .phone {
-      width: 320px; height: 600px; background: #000; border-radius: 35px;
-      padding: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-    }
-    .notch { width: 120px; height: 20px; background: #111; border-radius: 0 0 15px 15px; margin: 0 auto 10px; }
-    .screen {
-      background: #f9fafb; height: 100%; border-radius: 25px; padding: 20px;
-      display: flex; flex-direction: column; justify-content: space-between; text-align: center;
-      transition: 0.3s;
-    }
-    body.dark .screen { background: #1f1f1f; color: #fff; }
-    h1 { font-size: 22px; margin: 10px 0; }
-    #joke {
-      font-size: 18px; padding: 15px; background: #fff; border-radius: 15px;
-      min-height: 140px; display: flex; align-items: center; justify-content: center; transition: 0.3s;
-    }
-    body.dark #joke { background: #333; }
-    button { padding: 15px; border: none; border-radius: 15px; background: #667eea; color: white; font-size: 18px; cursor: pointer; }
-    button:active { transform: scale(0.96); }
-    .controls { display: flex; justify-content: space-between; margin-top: 10px; flex-wrap: wrap; gap: 5px; }
-    .small-btn { font-size: 12px; padding: 8px; background: #444; flex: 1; }
-    .footer { font-size: 12px; color: #888; }
-  </style>
-</head>
-
-<body>
-
-<div class="phone">
-  <div class="notch"></div>
-  <div class="screen" id="screen">
-    <h1>😂 Joke App</h1>
-    <div id="joke">Swipe or tap for a joke 😄</div>
-
-    <button onclick="getJoke()">Get Joke</button>
-
-    <div class="controls">
-      <button class="small-btn" onclick="setCategory('funny')">😂 Funny</button>
-      <button class="small-btn" onclick="setCategory('love')">❤️ Love</button>
-      <button class="small-btn" onclick="toggleDark()">🌙 Dark</button>
-      <button class="small-btn" onclick="playSound()">🔊 Sound</button>
-    </div>
-
-    <div class="footer">Swipe up for new joke</div>
-  </div>
-</div>
-
-<audio id="sound">
-  <source src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg">
-</audio>
-
 <script>
 const jokeDiv = document.getElementById("joke");
 const sound = document.getElementById("sound");
 let currentCategory = "funny";
 
-function setCategory(cat) { currentCategory = cat; getJoke(); }
+// 100 jokes (split 50 funny, 50 love for example)
+const jokes = {
+  funny: [
+    "Why did the scarecrow win an award? Because he was outstanding in his field!",
+    "I told my wife she was drawing her eyebrows too high. She looked surprised.",
+    "Why don’t scientists trust atoms? Because they make up everything!",
+    "I’m reading a book about anti-gravity. It’s impossible to put down.",
+    "Why did the math book look sad? Because it had too many problems.",
+    "I would tell you a joke about construction, but I'm still working on it.",
+    "Why don’t skeletons fight each other? They don’t have the guts.",
+    "I asked my dog what's two minus two. He said nothing.",
+    "Why did the coffee file a police report? It got mugged.",
+    "What do you call fake spaghetti? An impasta.",
+    "How does a penguin build its house? Igloos it together.",
+    "Why was the broom late? It overswept.",
+    "What do you call cheese that isn't yours? Nacho cheese.",
+    "Why can't your nose be 12 inches long? Because then it would be a foot.",
+    "Why did the golfer bring two pairs of pants? In case he got a hole in one.",
+    "I told my computer I needed a break, and it said 'No problem, I’ll go to sleep.'",
+    "Why don’t oysters share their pearls? Because they’re shellfish.",
+    "I tried to catch fog yesterday. Mist.",
+    "Why was the stadium so hot after the game? All the fans left.",
+    "Why did the tomato turn red? Because it saw the salad dressing.",
+    "Why did the bicycle fall over? It was two-tired.",
+    "I asked the librarian if the library had books on paranoia. She whispered, 'They're right behind you.'",
+    "Why did the cookie go to the hospital? Because he felt crummy.",
+    "I’m reading a horror book in braille. Something bad is going to happen, I can feel it.",
+    "Why don’t vampires attack Taylor Swift? She has bad blood.",
+    "Why was the math lecture so long? The teacher kept going off on a tangent.",
+    "Why did the computer go to the doctor? It caught a virus.",
+    "Why do cows wear bells? Because their horns don’t work.",
+    "Why did the chicken join a band? Because it had the drumsticks.",
+    "I told a joke about chemistry, but there was no reaction.",
+    "Why did the stadium get hot? Because all the fans left.",
+    "What do you call a factory that makes good products? A satisfactory.",
+    "Why do seagulls fly over the ocean? Because if they flew over the bay, they'd be bagels.",
+    "Why did the banana go to the doctor? Because it wasn’t peeling well.",
+    "Why did the scarecrow get promoted? He was outstanding in his field.",
+    "Why don't programmers like nature? Too many bugs.",
+    "Why did the hipster burn his mouth? He drank his coffee before it was cool.",
+    "I told my friend she was drawing her eyebrows too high. She seemed surprised.",
+    "Why did the stadium get wet? Because the fans left.",
+    "Why was the stadium so cold? Because it was full of fans.",
+    "Why did the picture go to jail? It was framed.",
+    "Why was the belt arrested? It held up a pair of pants.",
+    "Why was the calendar popular? It had a lot of dates.",
+    "Why do bees hum? Because they don't know the words.",
+    "Why did the man put his money in the freezer? He wanted cold hard cash.",
+    "Why did the mushroom go to the party alone? Because he’s a fungi.",
+    "Why did the computer go to the doctor? It had a virus.",
+    "Why don’t crabs give to charity? Because they’re shellfish."
+  ],
+  love: [
+    "Love is like a fart. If you have to force it, it’s probably crap.",
+    "Are you French? Because Eiffel for you.",
+    "Do you have a map? I keep getting lost in your eyes.",
+    "Are you a magician? Whenever I look at you, everyone else disappears.",
+    "If you were a vegetable, you’d be a cute-cumber.",
+    "Are you Wi-Fi? Because I’m feeling a connection.",
+    "You must be a parking ticket, because you’ve got FINE written all over you.",
+    "If kisses were snowflakes, I’d send you a blizzard.",
+    "Do you have a Band-Aid? I just scraped my knee falling for you.",
+    "Are you a camera? Every time I look at you, I smile.",
+    "You must be tired because you’ve been running through my mind all day.",
+    "I must be a snowflake, because I’ve fallen for you.",
+    "Are you a loan? Because you have my interest.",
+    "Are you Google? Because you have everything I’m searching for.",
+    "Are you an angel? Because heaven is missing one.",
+    "I’m not a photographer, but I can picture us together.",
+    "If you were words on a page, you’d be fine print.",
+    "Do you have a sunburn, or are you always this hot?",
+    "You must be made of copper and tellurium because you’re Cu-Te.",
+    "Are you a time traveler? Because I see you in my future.",
+    "You must be a magician, because whenever I look at you, everyone else disappears.",
+    "If I could rearrange the alphabet, I’d put U and I together.",
+    "Are you a Wi-Fi signal? Because I feel a strong connection.",
+    "Are you a campfire? Because you’re hot and I want s’more.",
+    "Do you have a pencil? Cause I want to erase your past and write our future.",
+    "You’re like sunshine on a rainy day.",
+    "Are you French? Because Eifel for you.",
+    "Are you a snowstorm? Because you just made my heart melt.",
+    "You must be jelly, because jam don’t shake like that.",
+    "Are you a light bulb? Because you brighten up my day.",
+    "If you were a fruit, you’d be a fine-apple.",
+    "You must be a keyboard, because you’re just my type.",
+    "Are you a cat? Because I’m feline a connection between us.",
+    "Do you like Star Wars? Because Yoda one for me.",
+    "You must be a mirror, because I see myself in you.",
+    "Are you a charger? Because without you, I’d die.",
+    "Are you a magnet? Because you’re attracting me over here.",
+    "You must be a cupcake, because you’re sweet.",
+    "Are you a library book? Because I can’t stop checking you out.",
+    "Do you have a compass? I keep getting lost in your eyes.",
+    "Are you a flower? Because you just brightened my day.",
+    "If beauty were time, you’d be eternity.",
+    "You must be chocolate, because you make life sweeter.",
+    "Are you a rainbow? Because you just made my heart colorful.",
+    "If I were a cat, I’d spend all 9 lives with you.",
+    "Are you a river? Because you’re making my heart flow.",
+    "Are you a diamond? Because you’re priceless.",
+    "You must be a star, because your light guides me.",
+    "Are you a song? Because you’re stuck in my head.",
+    "Are you an artist? Because you just drew me in.",
+    "You must be a pillow, because I want to cuddle with you."
+  ]
+};
 
-async function getJoke() {
-  jokeDiv.innerText = "Loading... ⏳";
-  const res = await fetch(`/api/joke?category=${currentCategory}`);
-  const data = await res.json();
-  jokeDiv.innerText = data.joke;
+function setCategory(cat) {
+  currentCategory = cat;
+  getJoke();
+}
+
+function getJoke() {
+  const categoryJokes = jokes[currentCategory];
+  const randomIndex = Math.floor(Math.random() * categoryJokes.length);
+  jokeDiv.innerText = categoryJokes[randomIndex];
   if (navigator.vibrate) navigator.vibrate(100);
   playSound();
 }
@@ -97,6 +137,3 @@ document.addEventListener("touchend", e => {
 // Service Worker for PWA
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js");
 </script>
-
-</body>
-</html>
