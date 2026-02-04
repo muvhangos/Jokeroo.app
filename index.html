@@ -1,9 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>😂 Joke App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    body.dark { background: linear-gradient(135deg, #111, #333); }
+    .phone {
+      width: 320px; height: 600px; background: #000; border-radius: 35px;
+      padding: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    .notch { width: 120px; height: 20px; background: #111; border-radius: 0 0 15px 15px; margin: 0 auto 10px; }
+    .screen {
+      background: #f9fafb; height: 100%; border-radius: 25px; padding: 20px;
+      display: flex; flex-direction: column; justify-content: space-between; text-align: center;
+      transition: 0.3s;
+    }
+    body.dark .screen { background: #1f1f1f; color: #fff; }
+    h1 { font-size: 22px; margin: 10px 0; }
+    #joke {
+      font-size: 18px; padding: 15px; background: #fff; border-radius: 15px;
+      min-height: 140px; display: flex; align-items: center; justify-content: center; transition: 0.3s;
+    }
+    body.dark #joke { background: #333; }
+    button { padding: 15px; border: none; border-radius: 15px; background: #667eea; color: white; font-size: 18px; cursor: pointer; }
+    button:active { transform: scale(0.96); }
+    .controls { display: flex; justify-content: space-between; margin-top: 10px; flex-wrap: wrap; gap: 5px; }
+    .small-btn { font-size: 12px; padding: 8px; background: #444; flex: 1; }
+    .footer { font-size: 12px; color: #888; }
+  </style>
+</head>
+
+<body>
+
+<div class="phone">
+  <div class="notch"></div>
+  <div class="screen" id="screen">
+    <h1>😂 Joke App</h1>
+    <div id="joke">Swipe or tap for a joke 😄</div>
+
+    <button onclick="getJoke()">Get Joke</button>
+
+    <div class="controls">
+      <button class="small-btn" onclick="setCategory('funny')">😂 Funny</button>
+      <button class="small-btn" onclick="setCategory('love')">❤️ Love</button>
+      <button class="small-btn" onclick="toggleDark()">🌙 Dark</button>
+      <button class="small-btn" onclick="playSound()">🔊 Sound</button>
+    </div>
+
+    <div class="footer">Swipe up for new joke</div>
+  </div>
+</div>
+
+<audio id="sound">
+  <source src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg">
+</audio>
+
 <script>
 const jokeDiv = document.getElementById("joke");
 const sound = document.getElementById("sound");
 let currentCategory = "funny";
 
-// 100 jokes (split 50 funny, 50 love for example)
+// 100 jokes (50 funny, 50 love)
 const jokes = {
   funny: [
     "Why did the scarecrow win an award? Because he was outstanding in his field!",
@@ -137,3 +206,6 @@ document.addEventListener("touchend", e => {
 // Service Worker for PWA
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js");
 </script>
+
+</body>
+</html>
