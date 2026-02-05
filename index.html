@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>😂 Joke App</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="manifest" href="manifest.json">
 
   <style>
@@ -68,11 +69,20 @@
     }
     body.dark #joke { background: #333; color: #fff; }
 
-    /* Scrollbar styling */
-    #joke::-webkit-scrollbar { width: 6px; }
-    #joke::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 3px; }
-    #joke::-webkit-scrollbar-thumb { background: #667eea; border-radius: 3px; }
-    #joke::-webkit-scrollbar-thumb:hover { background: #764ba2; }
+    #joke::-webkit-scrollbar {
+      width: 6px;
+    }
+    #joke::-webkit-scrollbar-track {
+      background: #f0f0f0;
+      border-radius: 3px;
+    }
+    #joke::-webkit-scrollbar-thumb {
+      background: #667eea;
+      border-radius: 3px;
+    }
+    #joke::-webkit-scrollbar-thumb:hover {
+      background: #764ba2;
+    }
 
     button { 
       padding: 15px; 
@@ -85,15 +95,46 @@
       margin-bottom: 5px;
     }
     button:active { transform: scale(0.96); }
-    .controls { display: flex; justify-content: space-between; margin-top: 10px; flex-wrap: wrap; gap: 5px; }
-    .small-btn { font-size: 12px; padding: 8px; background: #444; flex: 1; }
-    .footer { font-size: 12px; color: #888; margin-top: 10px; }
-    .credit { font-size: 8px; color: #aaa; position: absolute; bottom: 5px; left: 0; width: 100%; text-align: center; }
-    .app-logo { width: 40px; position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); opacity: 0.6; }
+    .controls { 
+      display: flex; 
+      justify-content: space-between; 
+      margin-top: 10px; 
+      flex-wrap: wrap; 
+      gap: 5px; 
+    }
+    .small-btn { 
+      font-size: 12px; 
+      padding: 8px; 
+      background: #444; 
+      flex: 1; 
+    }
+    .footer { 
+      font-size: 12px; 
+      color: #888; 
+      margin-top: 10px; 
+    }
+    .credit {
+      font-size: 8px; 
+      color: #aaa; 
+      position: absolute; 
+      bottom: 5px; 
+      left: 50%; 
+      transform: translateX(-50%);
+      text-align: center;
+    }
+    .app-logo {
+      width: 50px;
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0.6;
+    }
   </style>
 </head>
 
 <body>
+
 <div class="phone">
   <div class="notch"></div>
   <div class="screen" id="screen">
@@ -113,7 +154,7 @@
     </div>
 
     <div class="footer">Swipe up for new joke</div>
-    <img src="logo.png" class="app-logo" alt="WinTech Technology">
+    <img src="e6e3d851-4253-4258-88f9-97a9b00063ef.png" class="app-logo" alt="WinTech Technology">
     <div class="credit">Created by WinTech Technology</div>
   </div>
 </div>
@@ -132,9 +173,8 @@ let sounds = [
   document.getElementById("sound3")
 ];
 let soundIndex = 0;
-let favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
 
-// All 100 jokes
+// All 100 jokes: Funny + Love
 const jokes = {
   funny: [
     "Why did the scarecrow win an award? Because he was outstanding in his field!",
@@ -241,63 +281,62 @@ const jokes = {
   ]
 };
 
-// FUNCTIONS
-function setCategory(cat){ currentCategory=cat; getJoke(); }
+// Favorite jokes storage
+let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
-function getJoke(){
-  const categoryJokes=jokes[currentCategory];
-  const randomIndex=Math.floor(Math.random()*categoryJokes.length);
-  jokeDiv.innerText=categoryJokes[randomIndex];
-  jokeDiv.scrollTop=0;
-  if(navigator.vibrate) navigator.vibrate(100);
+// Functions
+function setCategory(cat) { currentCategory = cat; getJoke(); }
+
+function getJoke() {
+  const categoryJokes = jokes[currentCategory];
+  const randomIndex = Math.floor(Math.random() * categoryJokes.length);
+  jokeDiv.innerText = categoryJokes[randomIndex];
+  jokeDiv.scrollTop = 0;
+  if (navigator.vibrate) navigator.vibrate(100);
   playSound();
 }
 
-// Favorites ⭐
-function toggleFavorite(){
-  const joke=jokeDiv.innerText;
-  if(favorites.includes(joke)){
-    favorites=favorites.filter(j=>j!==joke);
-    alert("Removed from favorites");
-  }else{
-    favorites.push(joke);
+function toggleFavorite() {
+  const text = jokeDiv.innerText;
+  if (favorites.includes(text)) {
+    favorites = favorites.filter(j => j !== text);
+    alert("Removed from favorites ⭐");
+  } else {
+    favorites.push(text);
     alert("Added to favorites ⭐");
   }
-  localStorage.setItem("favorites",JSON.stringify(favorites));
+  localStorage.setItem("favorites", JSON.stringify(favorites));
 }
 
-// Share
-function shareJoke(){
-  const joke=jokeDiv.innerText;
-  if(navigator.share){
-    navigator.share({title:"😂 Joke App", text:joke}).catch(err=>console.log(err));
-  }else{
-    // WhatsApp & FB fallback
-    const url="https://wa.me/?text="+encodeURIComponent(joke);
-    window.open(url,"_blank");
-  }
+function shareJoke() {
+  const jokeText = encodeURIComponent(jokeDiv.innerText);
+  const whatsapp = `https://api.whatsapp.com/send?text=${jokeText}`;
+  const facebook = `https://www.facebook.com/sharer/sharer.php?u=&quote=${jokeText}`;
+  const share = prompt("Copy the link or share:\n1. WhatsApp\n2. Facebook", "1 or 2");
+  if (share === "1") window.open(whatsapp, "_blank");
+  else if (share === "2") window.open(facebook, "_blank");
+  else alert("Share cancelled.");
 }
 
-// Dark mode
-function toggleDark(){ document.body.classList.toggle("dark"); }
+function toggleDark() { document.body.classList.toggle("dark"); }
 
-// Play rotating sounds
-function playSound(){
-  sounds[soundIndex].currentTime=0;
+function playSound() {
+  sounds[soundIndex].currentTime = 0;
   sounds[soundIndex].play();
-  soundIndex=(soundIndex+1)%sounds.length;
+  soundIndex = (soundIndex + 1) % sounds.length; // rotate sounds
 }
 
-// Swipe detection
-let startY=0;
-document.addEventListener("touchstart", e=>startY=e.touches[0].clientY);
-document.addEventListener("touchend", e=>{
-  const endY=e.changedTouches[0].clientY;
-  if(startY-endY>50) getJoke();
+// Swipe gesture
+let startY = 0;
+document.addEventListener("touchstart", e => startY = e.touches[0].clientY);
+document.addEventListener("touchend", e => {
+  const endY = e.changedTouches[0].clientY;
+  if (startY - endY > 50) getJoke();
 });
 
-// Service Worker
-if("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js");
+// Service Worker for PWA
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js");
 </script>
+
 </body>
 </html>
