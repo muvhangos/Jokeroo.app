@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>😂 Glossy Joke App</title>
+<title>😂 Joke App</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body {
@@ -107,7 +107,7 @@ button:active { transform:scale(0.96); }
 <div class="phone">
   <div class="notch"></div>
   <div class="screen">
-    <h1>😂 Glossy Joke App</h1>
+    <h1>😂 Joke App</h1>
     <div id="joke">Tap for a joke! 😄</div>
 
     <button onclick="getJoke()">Get Joke</button>
@@ -122,7 +122,7 @@ button:active { transform:scale(0.96); }
     </div>
 
     <div class="footer">Swipe up for a new joke</div>
-    <div class="credit">Created by WinTech Technology</div>
+    <div class="credit">Property of WinTech Technology</div>
   </div>
 </div>
 
@@ -306,7 +306,7 @@ function getJoke(){
 }
 function playSound(){ sound.currentTime=0; sound.play(); }
 function copyJoke(){ navigator.clipboard.writeText(jokeDiv.innerText).then(()=>alert("Joke copied! 📋")); }
-function shareJoke(){ if(navigator.share) navigator.share({title:"😂 Glossy Joke App",text:jokeDiv.innerText}); }
+function shareJoke(){ if(navigator.share) navigator.share({title:"😂 Joke App",text:jokeDiv.innerText}); }
 function toggleDark(){ document.body.classList.toggle("dark"); }
 
 function createHearts(){
@@ -342,4 +342,5 @@ document.getElementById("joke").addEventListener("touchend",e=>{
 </script>
 </body>
 </html>
+
 
