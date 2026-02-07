@@ -5,137 +5,113 @@
 <title>😂 Joke App</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-/* Body & Theme */
-body{
-  margin:0;padding:0;font-family:Arial;
-  display:flex;justify-content:center;align-items:center;
+body {
+  margin:0; padding:0;
+  font-family: Arial, sans-serif;
+  display:flex; justify-content:center; align-items:center;
   height:100vh;
-  background:linear-gradient(135deg,#667eea,#764ba2);
+  background: linear-gradient(135deg,#667eea,#764ba2);
   overflow:hidden;
 }
-body.dark{background:#111;color:#fff}
+body.dark { background: linear-gradient(135deg,#111,#333); color:#fff; }
 
-/* Phone Frame */
-.phone{
-  width:340px;
-  height:620px;
-  background:#222;
-  border-radius:50px;
-  box-shadow:0 20px 50px rgba(0,0,0,.5);
-  padding:10px;
-  position:relative;
-  display:flex;flex-direction:column;
-  align-items:center;
-}
-
-/* Screen */
-.screen{
-  background:#f5f5f5;
-  border-radius:40px;
-  width:100%;
-  height:100%;
-  padding:20px;
-  text-align:center;
-  overflow:hidden;
-  position:relative;
-  transition:0.3s;
-}
-body.dark .screen{background:#1f1f1f;color:#fff}
-
-/* Joke Box */
-#joke{
-  background:#fff;
-  border-radius:15px;
+.phone {
+  width: 340px; height: 620px; 
+  background: linear-gradient(145deg,#fff,#e0e0e0);
+  border-radius:40px; 
+  box-shadow:0 15px 40px rgba(0,0,0,0.5);
   padding:15px;
-  min-height:160px;
-  overflow:auto;
-  margin-bottom:10px;
-  text-align:left;
-  line-height:1.4;
-  position:relative;z-index:2;
+  display:flex; flex-direction:column;
+  justify-content:flex-start;
+  position:relative;
+  overflow:hidden;
 }
-body.dark #joke{background:#333;color:#fff}
 
-/* Buttons */
-button{
-  padding:12px;
-  border:none;
-  border-radius:12px;
-  color:#fff;
-  margin:4px 0;
-  cursor:pointer;
-  width:100%;
+.notch { width:120px; height:20px; background:#111; border-radius:0 0 15px 15px; margin:0 auto 10px; }
+
+.screen {
+  background: linear-gradient(to bottom, #fff,#f0f0f0);
+  flex:1; border-radius:25px;
+  padding:20px; display:flex; flex-direction:column;
+  text-align:center; position:relative;
   transition:0.3s;
+  box-shadow: inset 0 0 20px rgba(255,255,255,0.3);
 }
-button:hover{transform:scale(1.03);}
-button:active{transform:scale(0.95);}
+body.dark .screen { background:#1f1f1f; color:#fff; box-shadow: inset 0 0 20px rgba(255,255,255,0.1); }
 
-/* Controls */
-.controls{
-  display:flex;gap:5px;flex-wrap:wrap;margin-top:5px;
-}
-.small-btn{
-  font-size:12px;
-  flex:1;
-  border-radius:12px;
-  color:white;
-}
+h1 { font-size:22px; margin:10px 0; text-shadow:1px 1px 2px #999; }
 
-/* Credit */
-.credit{
-  font-size:8px;color:#999;margin-top:6px;position:relative;z-index:2;
+#joke {
+  font-size:16px; padding:15px; 
+  background: linear-gradient(145deg,#fff,#f9f9f9);
+  border-radius:15px; min-height:160px; 
+  display:flex; align-items:flex-start; justify-content:flex-start; 
+  overflow-y:auto; max-height:200px; margin-bottom:10px; 
+  text-align:left; line-height:1.4; scroll-behavior:smooth;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+  position:relative;
 }
+body.dark #joke { background:#333; color:#fff; }
 
-/* Hearts */
-.heart{
-  position:absolute;
-  width:20px;
-  height:20px;
-  background:red;
-  transform:rotate(45deg);
-  animation: floatUp 2s linear forwards;
-  z-index:1;
-}
-.heart:before, .heart:after{
-  content:"";
-  position:absolute;
-  width:20px;height:20px;
-  background:red;
-  border-radius:50%;
-}
-.heart:before{top:-10px;left:0;}
-.heart:after{top:0;left:-10px;}
-@keyframes floatUp{
-  0%{opacity:1;transform:translate(0,0) rotate(45deg);}
-  100%{opacity:0;transform:translate(var(--x,0px),-150px) rotate(45deg);}
-}
-
-/* Glitter */
-.glitter{
-  position:absolute;
-  width:4px;height:4px;
-  background:rgba(255,255,255,0.9);
-  border-radius:50%;
-  pointer-events:none;
+/* Glitter animation */
+.glitter {
+  position:absolute; width:4px; height:4px; background:rgba(255,255,255,0.9);
+  border-radius:50%; pointer-events:none;
   animation: glitterMove 2s linear infinite;
-  z-index:1;
 }
-@keyframes glitterMove{
-  0% {opacity:0; transform:translate(0,0) scale(1);}
-  50% {opacity:1; transform:translate(calc(50px*var(--randX)),-20px) scale(1.2);}
-  100% {opacity:0; transform:translate(calc(100px*var(--randX)),-50px) scale(0.5);}
+@keyframes glitterMove {
+  0% { opacity:0; transform:translate(0,0) scale(1);}
+  50% { opacity:1; transform:translate(calc(50px*var(--randX)),-20px) scale(1.2);}
+  100% { opacity:0; transform:translate(calc(100px*var(--randX)),-50px) scale(0.5);}
 }
+
+button {
+  padding:14px; border:none; border-radius:15px;
+  background: linear-gradient(145deg,#ff758c,#ff7eb3);
+  color:white; font-size:16px; cursor:pointer; margin-bottom:5px;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+  transition:0.3s;
+  position:relative; overflow:hidden;
+}
+button:hover { transform:scale(1.03); }
+button:active { transform:scale(0.96); }
+
+.controls {
+  display:flex; justify-content:space-between; margin-top:10px; flex-wrap:wrap; gap:5px;
+}
+.small-btn {
+  font-size:12px; padding:8px; background:#444; flex:1; border-radius:12px; color:white;
+}
+
+.footer { font-size:12px; color:#888; margin-top:10px; }
+.credit { font-size:8px; color:#aaa; position:absolute; bottom:5px; left:0; width:100%; text-align:center; }
+
+.heart {
+  position:absolute; color:#ff4e50; font-size:24px; pointer-events:none;
+  opacity:0; transform:translateY(0) scale(1); animation: float linear forwards;
+}
+@keyframes float {
+  0% { opacity:1; transform: translateY(0) scale(1) rotate(0deg); }
+  100% { opacity:0; transform: translateY(-300px) scale(1.5) rotate(360deg); }
+}
+
+#joke::-webkit-scrollbar { width:6px; }
+#joke::-webkit-scrollbar-track { background:#f0f0f0; border-radius:3px; }
+#joke::-webkit-scrollbar-thumb { background:#667eea; border-radius:3px; }
+#joke::-webkit-scrollbar-thumb:hover { background:#764ba2; }
+
 </style>
 </head>
 <body>
 <div class="phone">
+  <div class="notch"></div>
   <div class="screen">
-    <h2>😂 Joke App</h2>
-    <div id="joke">Tap Get Joke 😄</div>
+    <h1>😂 Joke App</h1>
+    <div id="joke">Tap for a joke! 😄</div>
 
-    <button id="getJokeBtn">😂 Get Joke</button>
-    <button onclick="copyJoke()">📋 Copy</button>
-    <button onclick="shareJoke()">🔗 Share</button>
+    <button onclick="getJoke()">Get Joke</button>
+    <button onclick="copyJoke()">📋 Copy Joke</button>
+    <button onclick="shareJoke()">🔗 Share Joke</button>
 
     <div class="controls">
       <button class="small-btn" onclick="setCategory('funny')">😂 Funny</button>
@@ -144,94 +120,209 @@ button:active{transform:scale(0.95);}
       <button class="small-btn" onclick="toggleDark()">🌙 Dark</button>
     </div>
 
+    <div class="footer">Swipe up for a new joke</div>
     <div class="credit">Property of WinTech Technology</div>
   </div>
 </div>
 
-<!-- Sounds -->
-<audio id="funnySound" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
-<audio id="loveSound" src="https://actions.google.com/sounds/v1/cartoon/pop.ogg"></audio>
-<audio id="romanticSound" src="https://actions.google.com/sounds/v1/ambiences/heartbeat.ogg"></audio>
+<audio id="sound">
+  <source src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" type="audio/ogg">
+</audio>
 
 <script>
-// Jokes (150) - shortened here for brevity, use full array from previous code
+// Get elements
 const jokeDiv = document.getElementById("joke");
+const sound = document.getElementById("sound");
 let currentCategory = "funny";
 
-// Include full jokes object here (funny, love, romantic) like previous code
-
-const sounds = {
-  funny: document.getElementById("funnySound"),
-  love: document.getElementById("loveSound"),
-  romantic: document.getElementById("romanticSound")
+// All 150 jokes
+const jokes = {
+  funny: [
+    "I tried to be funny once… even my mirror laughed at me 😂",
+    "I put my phone on silent and my life finally had peace 😄",
+    "My brain has too many tabs open… and one is playing music 🎵",
+    "I told my computer I needed a break, now it won’t stop sending me KitKat ads 🍫",
+    "Why don’t secrets last long? Because someone always hits 'share' 🤣",
+    "I run on coffee, sarcasm, and bad decisions ☕",
+    "Life is short. Smile while you still have teeth 😁",
+    "I started exercising… my fingers on the keyboard 💻",
+    "I’m not lazy, I’m on energy-saving mode 😴",
+    "I talk to myself because sometimes I need expert advice 🤓",
+    "I wanted abs, but I found snacks instead 🍔",
+    "My bed and I are in a committed relationship 🛏️",
+    "I used to think I was indecisive… now I’m not too sure 🤔",
+    "I don’t rise and shine, I caffeinate and hope ☕",
+    "Why be moody when you can shake your booty 💃",
+    "I tried dieting but cake called my name 🎂",
+    "I’m on a seafood diet — I see food and eat it 🍕",
+    "If stress burned calories, I’d be a supermodel 😅",
+    "I put the pro in procrastinate ⏳",
+    "My wallet is like an onion, opening it makes me cry 😭",
+    "I downloaded a fitness app… then deleted it 🏃",
+    "I talk to my dog more than humans 🐕",
+    "My brain left the chat 💬",
+    "I don’t need Google, my mom knows everything 😆",
+    "Why fall in love when you can fall asleep 😴",
+    "I tried being normal once — worst two minutes of my life 😂",
+    "If at first you don’t succeed, then skydiving is not for you 🪂",
+    "I whisper to my Wi-Fi router for better connection 📶",
+    "I’m great at multitasking: I can waste time in many ways 😜",
+    "My sense of direction is sponsored by wrong turns 🚦",
+    "I wake up tired, go to bed tired — it’s a talent 😴",
+    "I smile because I have no idea what’s going on 😄",
+    "My phone battery lasts longer than my motivation 🔋",
+    "I put my phone down to sleep… didn’t work 📱",
+    "I tried adulting, I need a refund 💸",
+    "I don’t snore, I dream I’m a motorcycle 🏍️",
+    "I laugh at my own jokes so you don’t have to 😂",
+    "I eat cake because it’s somebody’s birthday somewhere 🎉",
+    "I opened a book… accidentally 📚",
+    "I’m not arguing, I’m just explaining why I’m right 😎",
+    "My life feels like a test I didn’t study for 📝",
+    "I planned to be productive… tomorrow 😆",
+    "I don’t sweat, I sparkle ✨",
+    "I woke up like this… tired 😴",
+    "I’m not messy, I have a creative organization system 🎨",
+    "I told my alarm to stop, it didn’t listen ⏰",
+    "I need six months of vacation, twice a year 🏖️",
+    "I eat snacks like meals 🍿",
+    "I have a degree in overthinking 🤯",
+    "I tried to be cool, but I overheated 🔥"
+  ],
+  love: [
+    "Love is when your happiness depends on someone else’s smile ❤️",
+    "Love is sharing fries even when you said you weren’t hungry 🍟",
+    "Love is arguing over food and still ordering extra 😄",
+    "Love makes ordinary moments feel magical ✨",
+    "Love is finding comfort in someone’s silence 💕",
+    "Love is choosing the same person every day 💖",
+    "Love is laughing at jokes that aren’t funny 😍",
+    "Love is staying even when it’s hard 💗",
+    "Love is a warm hug on a cold day 🤗",
+    "Love is caring without conditions ❤️",
+    "Love is seeing the good even on bad days 🌈",
+    "Love is being weird together 😜",
+    "Love is knowing someone’s favorite snack 🍫",
+    "Love is patience mixed with trust 💞",
+    "Love is late-night talks 🌙",
+    "Love is feeling safe in someone’s arms 🤍",
+    "Love is growing together 🌱",
+    "Love is choosing understanding over ego 💘",
+    "Love is listening, not just hearing 💓",
+    "Love is missing someone before they leave 😌",
+    "Love is support without judgment 💕",
+    "Love is holding hands through storms 🌧️",
+    "Love is a smile that feels like home 🏡",
+    "Love is saying ‘I’m here’ and meaning it ❤️",
+    "Love is celebrating small wins together 🎉",
+    "Love is knowing when to speak and when to hug 🤗",
+    "Love is trusting with your heart 💖",
+    "Love is imperfect but real 💗",
+    "Love is choosing kindness daily 🌸",
+    "Love is remembering little details 💭",
+    "Love is forgiving and healing 💞",
+    "Love is comfort food for the soul 🍲",
+    "Love is laughter after tears 😂",
+    "Love is presence over presents 🎁",
+    "Love is feeling complete, not owned 💓",
+    "Love is growth, not control 🌱",
+    "Love is showing up ❤️",
+    "Love is calm in chaos 🌊",
+    "Love is holding on gently 🤍",
+    "Love is mutual respect 💕",
+    "Love is being understood 💘",
+    "Love is choosing us 💑",
+    "Love is warmth without words 🔥",
+    "Love is hope 💖",
+    "Love is effort 💗",
+    "Love is honesty 💞",
+    "Love is teamwork 🤝",
+    "Love is peace 🕊️",
+    "Love is you and me ❤️"
+  ],
+  romantic: [
+    "You are my favorite thought before sleep 🌙",
+    "Every love song makes sense because of you 🎶",
+    "You make my heart smile 💘",
+    "With you, love feels easy ❤️",
+    "Your presence feels like home 🏡",
+    "I’d choose you in every lifetime 💫",
+    "You are my calm in chaos 🌹",
+    "Your smile is my favorite view 😍",
+    "I fell for you without realizing it 💕",
+    "You are my forever kind of moment ♾️",
+    "I love how you make ordinary days special ✨",
+    "Your love feels like poetry 📖",
+    "I’d hold your hand anywhere 💑",
+    "You are my heart’s favorite place ❤️",
+    "I smile more because of you 😊",
+    "Your love feels safe 💞",
+    "I’d rather be with you than anywhere else 🌍",
+    "You are my always 💖",
+    "My heart recognizes yours 💓",
+    "I love the way you exist 🌸",
+    "You make my soul feel warm 🔥",
+    "You are my sweetest habit 💘",
+    "I see my future in your eyes 👀",
+    "Your love feels like magic ✨",
+    "I’d cross any distance for you 🌌",
+    "You are my once-in-a-lifetime 💫",
+    "I choose you, every day ❤️",
+    "Your name sounds like happiness 😊",
+    "You are my favorite hello 💕",
+    "You are my hardest goodbye 💔",
+    "Your love completes me 💞",
+    "You make my heart feel brave 💓",
+    "I fall for you again every day 🌹",
+    "You are my safe place 🏡",
+    "I love you more than yesterday 💖",
+    "Your love feels like sunlight ☀️",
+    "You are my miracle ✨",
+    "My heart whispers your name 💘",
+    "I’m grateful for your love 🙏",
+    "You make love feel real ❤️",
+    "You are my sweetest dream 🌙",
+    "Your love feels timeless ⏳",
+    "You are my heart’s promise 💍",
+    "I love how you love me 💕",
+    "You are my favorite forever ♾️",
+    "I’m yours, completely 💖",
+    "Your love is my treasure 💎",
+    "You make my world softer 🌸",
+    "I love you — simply, deeply ❤️"
+  ]
 };
 
-function playSound(){
-  const sound = sounds[currentCategory];
-  sound.currentTime = 0;
-  sound.play().catch(()=>{});
-}
-
-function setCategory(cat){
-  currentCategory = cat;
-  updateTheme(cat);
-  getJoke();
-}
-
-function updateTheme(cat){
-  const btn = document.getElementById("getJokeBtn");
-  if(cat==="funny"){
-    btn.style.background="linear-gradient(145deg,#ff758c,#ff7eb3)";
-  }else if(cat==="love"){
-    btn.style.background="linear-gradient(145deg,#ff4e50,#f9d423)";
-  }else if(cat==="romantic"){
-    btn.style.background="linear-gradient(145deg,#ff6eb4,#ffb6c1)";
-  }
-}
-
+// Functions
+function setCategory(cat){ currentCategory=cat; getJoke(); }
 function getJoke(){
-  playSound();
   const arr = jokes[currentCategory];
-  if(!arr || arr.length===0){ jokeDiv.innerText="No jokes 😅"; return; }
+  if(!arr || arr.length===0){
+    jokeDiv.innerText = "No jokes found 😅"; return;
+  }
   const idx = Math.floor(Math.random()*arr.length);
   jokeDiv.innerText = arr[idx];
-  jokeDiv.scrollTop = 0;
-
-  if(currentCategory==="love" || currentCategory==="romantic"){
-    createHearts();
-    if(currentCategory==="romantic"){ createGlitter(); }
-  }
-}
-
-function copyJoke(){
+  jokeDiv.scrollTop=0;
   playSound();
-  navigator.clipboard.writeText(jokeDiv.innerText).then(()=>alert("Copied 📋"));
+  if(currentCategory!=="funny"){ createHearts(); createGlitter(); }
 }
-
-function shareJoke(){
-  playSound();
-  if(navigator.share){
-    navigator.share({title:"😂 Joke App", text:jokeDiv.innerText});
-  } else {
-    navigator.clipboard.writeText(jokeDiv.innerText);
-    alert("Sharing not supported. Joke copied 👍");
-  }
-}
-
+function playSound(){ sound.currentTime=0; sound.play(); }
+function copyJoke(){ navigator.clipboard.writeText(jokeDiv.innerText).then(()=>alert("Joke copied! 📋")); }
+function shareJoke(){ if(navigator.share) navigator.share({title:"😂 Joke App",text:jokeDiv.innerText}); }
 function toggleDark(){ document.body.classList.toggle("dark"); }
 
+// Floating hearts
 function createHearts(){
-  const num = 5+Math.floor(Math.random()*5);
-  for(let i=0;i<num;i++){
-    const heart = document.createElement("div");
-    heart.classList.add("heart");
-    heart.style.left=Math.random()*80+"%";
-    heart.style.setProperty('--x',(Math.random()*100-50)+'px');
-    document.querySelector('.screen').appendChild(heart);
-    setTimeout(()=>heart.remove(),2000);
+  for(let i=0;i<5;i++){
+    const heart=document.createElement("div");
+    heart.className="heart";
+    heart.style.left=Math.random()*90+"%";
+    heart.style.animationDuration=(Math.random()*2+2)+"s";
+    heart.innerText="❤️";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),2500);
   }
 }
-
 function createGlitter(){
   for(let i=0;i<10;i++){
     const g=document.createElement("div");
@@ -239,20 +330,19 @@ function createGlitter(){
     g.style.left=Math.random()*100+"%";
     g.style.top=Math.random()*100+"%";
     g.style.setProperty("--randX",Math.random());
-    document.querySelector('.screen').appendChild(g);
+    document.body.appendChild(g);
     setTimeout(()=>g.remove(),2000);
   }
 }
 
-document.getElementById("getJokeBtn").addEventListener("click", getJoke);
-
-// Swipe on mobile
+// Swipe up
 let startY;
-jokeDiv.addEventListener("touchstart", e=>{ startY=e.touches[0].clientY; });
-jokeDiv.addEventListener("touchend", e=>{
+jokeDiv.addEventListener("touchstart",e=>{ startY=e.touches[0].clientY; });
+jokeDiv.addEventListener("touchend",e=>{
   let endY=e.changedTouches[0].clientY;
   if(startY-endY>50){ getJoke(); }
 });
+
 </script>
 </body>
 </html>
