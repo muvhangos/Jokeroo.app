@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Joke App</title>
+<title>😂 Joke App</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
+/* General Body */
 body {
   margin:0; padding:0;
   font-family: Arial, sans-serif;
@@ -15,6 +16,7 @@ body {
 }
 body.dark { background: linear-gradient(135deg,#111,#333); color:#fff; }
 
+/* Phone */
 .phone {
   width: 340px; height: 620px; 
   background: linear-gradient(145deg,#fff,#e0e0e0);
@@ -27,8 +29,10 @@ body.dark { background: linear-gradient(135deg,#111,#333); color:#fff; }
   overflow:hidden;
 }
 
+/* Notch */
 .notch { width:120px; height:20px; background:#111; border-radius:0 0 15px 15px; margin:0 auto 10px; }
 
+/* Screen */
 .screen {
   background: linear-gradient(to bottom, #fff,#f0f0f0);
   flex:1; border-radius:25px;
@@ -39,8 +43,10 @@ body.dark { background: linear-gradient(135deg,#111,#333); color:#fff; }
 }
 body.dark .screen { background:#1f1f1f; color:#fff; box-shadow: inset 0 0 20px rgba(255,255,255,0.1); }
 
+/* Heading */
 h1 { font-size:22px; margin:10px 0; text-shadow:1px 1px 2px #999; }
 
+/* Joke box */
 #joke {
   font-size:16px; padding:15px; 
   background: linear-gradient(145deg,#fff,#f9f9f9);
@@ -50,22 +56,10 @@ h1 { font-size:22px; margin:10px 0; text-shadow:1px 1px 2px #999; }
   text-align:left; line-height:1.4; scroll-behavior:smooth;
   box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
   position:relative;
-  overflow:hidden;
 }
 body.dark #joke { background:#333; color:#fff; }
 
-/* Glitter animation */
-.glitter {
-  position:absolute; width:4px; height:4px; background:rgba(255,255,255,0.9);
-  border-radius:50%; pointer-events:none;
-  animation: glitterMove 2s linear infinite;
-}
-@keyframes glitterMove {
-  0% { opacity:0; transform:translate(0,0) scale(1);}
-  50% { opacity:1; transform:translate(calc(50px*var(--randX)),-20px) scale(1.2);}
-  100% { opacity:0; transform:translate(calc(100px*var(--randX)),-50px) scale(0.5);}
-}
-
+/* Buttons */
 button {
   padding:14px; border:none; border-radius:15px;
   background: linear-gradient(145deg,#ff758c,#ff7eb3);
@@ -84,9 +78,11 @@ button:active { transform:scale(0.96); }
   font-size:12px; padding:8px; background:#444; flex:1; border-radius:12px; color:white;
 }
 
+/* Footer and credits */
 .footer { font-size:12px; color:#888; margin-top:10px; }
 .credit { font-size:8px; color:#aaa; position:absolute; bottom:5px; left:0; width:100%; text-align:center; }
 
+/* Floating hearts */
 .heart {
   position:absolute; color:#ff4e50; font-size:24px; pointer-events:none;
   opacity:0; transform:translateY(0) scale(1); animation: float linear forwards;
@@ -96,6 +92,19 @@ button:active { transform:scale(0.96); }
   100% { opacity:0; transform: translateY(-300px) scale(1.5) rotate(360deg); }
 }
 
+/* Glitter animation */
+.glitter {
+  position:absolute; width:4px; height:4px; background:rgba(255,255,255,0.9);
+  border-radius:50%; pointer-events:none;
+  animation: glitterMove 2s linear infinite;
+}
+@keyframes glitterMove {
+  0% { opacity:0; transform:translate(0,0) scale(1);}
+  50% { opacity:1; transform:translate(calc(50px*var(--randX)),-20px) scale(1.2);}
+  100% { opacity:0; transform:translate(calc(100px*var(--randX)),-50px) scale(0.5);}
+}
+
+/* Scrollbar */
 #joke::-webkit-scrollbar { width:6px; }
 #joke::-webkit-scrollbar-track { background:#f0f0f0; border-radius:3px; }
 #joke::-webkit-scrollbar-thumb { background:#667eea; border-radius:3px; }
@@ -106,7 +115,7 @@ button:active { transform:scale(0.96); }
 <div class="phone">
   <div class="notch"></div>
   <div class="screen">
-    <h1>Joke App</h1>
+    <h1>😂 Joke App</h1>
     <div id="joke">Tap for a joke! 😄</div>
 
     <button onclick="getJoke()">Get Joke</button>
@@ -125,195 +134,196 @@ button:active { transform:scale(0.96); }
   </div>
 </div>
 
-<audio id="sound">
-  <source src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg">
-</audio>
+<!-- Sounds -->
+<audio id="soundFunny" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
+<audio id="soundLove" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
+<audio id="soundRomantic" src="https://actions.google.com/sounds/v1/cartoon/slide_whistle_to_drum.ogg"></audio>
 
 <script>
-const jokeDiv=document.getElementById("joke");
-const sound=document.getElementById("sound");
-let currentCategory="funny";
+// DOM Elements
+const jokeDiv = document.getElementById("joke");
+let currentCategory = "funny";
 
-const jokes={
-  funny:[
-    "I tried to be funny once… even my mirror laughed at me 😂",
-    "I put my phone on silent and my life finally had peace 😄",
-    "My brain has too many tabs open… and one is playing music 🎵",
-    "I told my computer I needed a break, now it won’t stop sending me KitKat ads 🍫",
-    "Why don’t secrets last long? Because someone always hits 'share' 🤣",
-    "I run on coffee, sarcasm, and bad decisions ☕",
-    "Life is short. Smile while you still have teeth 😁",
-    "I started exercising… my fingers on the keyboard 💻",
-    "I’m not lazy, I’m on energy-saving mode 😴",
-    "I talk to myself because sometimes I need expert advice 🤓",
-    "I wanted abs, but I found snacks instead 🍔",
-    "My bed and I are in a committed relationship 🛏️",
-    "I used to think I was indecisive… now I’m not too sure 🤔",
-    "I don’t rise and shine, I caffeinate and hope ☕",
-    "Why be moody when you can shake your booty 💃",
-    "I tried dieting but cake called my name 🎂",
-    "I’m on a seafood diet — I see food and eat it 🍕",
-    "If stress burned calories, I’d be a supermodel 😅",
-    "I put the pro in procrastinate ⏳",
-    "My wallet is like an onion, opening it makes me cry 😭",
-    "I downloaded a fitness app… then deleted it 🏃",
-    "I talk to my dog more than humans 🐕",
-    "My brain left the chat 💬",
-    "I don’t need Google, my mom knows everything 😆",
-    "Why fall in love when you can fall asleep 😴",
-    "I tried being normal once — worst two minutes of my life 😂",
-    "If at first you don’t succeed, then skydiving is not for you 🪂",
-    "I whisper to my Wi-Fi router for better connection 📶",
-    "I’m great at multitasking: I can waste time in many ways 😜",
-    "My sense of direction is sponsored by wrong turns 🚦",
-    "I wake up tired, go to bed tired — it’s a talent 😴",
-    "I smile because I have no idea what’s going on 😄",
-    "My phone battery lasts longer than my motivation 🔋",
-    "I put my phone down to sleep… didn’t work 📱",
-    "I tried adulting, I need a refund 💸",
-    "I don’t snore, I dream I’m a motorcycle 🏍️",
-    "I laugh at my own jokes so you don’t have to 😂",
-    "I eat cake because it’s somebody’s birthday somewhere 🎉",
-    "I opened a book… accidentally 📚",
-    "I’m not arguing, I’m just explaining why I’m right 😎",
-    "My life feels like a test I didn’t study for 📝",
-    "I planned to be productive… tomorrow 😆",
-    "I don’t sweat, I sparkle ✨",
-    "I woke up like this… tired 😴",
-    "I’m not messy, I have a creative organization system 🎨",
-    "I told my alarm to stop, it didn’t listen ⏰",
-    "I need six months of vacation, twice a year 🏖️",
-    "I eat snacks like meals 🍿",
-    "I have a degree in overthinking 🤯",
-    "I tried to be cool, but I overheated 🔥"
+// All 150 jokes
+const jokes = {
+  funny: [
+    "Why did the scarecrow win an award? Because he was outstanding in his field!",
+    "I told my wife she was drawing her eyebrows too high. She looked surprised.",
+    "Why don’t scientists trust atoms? Because they make up everything!",
+    "I’m reading a book about anti-gravity. It’s impossible to put down.",
+    "Why did the math book look sad? Because it had too many problems.",
+    "I would tell you a joke about construction, but I'm still working on it.",
+    "Why don’t skeletons fight each other? They don’t have the guts.",
+    "I asked my dog what's two minus two. He said nothing.",
+    "Why did the coffee file a police report? It got mugged.",
+    "What do you call fake spaghetti? An impasta.",
+    "How does a penguin build its house? Igloos it together.",
+    "Why was the broom late? It overswept.",
+    "What do you call cheese that isn't yours? Nacho cheese.",
+    "Why can't your nose be 12 inches long? Because then it would be a foot.",
+    "Why did the golfer bring two pairs of pants? In case he got a hole in one.",
+    "I told my computer I needed a break, and it said 'No problem, I’ll go to sleep.'",
+    "Why don’t oysters share their pearls? Because they’re shellfish.",
+    "I tried to catch fog yesterday. Mist.",
+    "Why was the stadium so hot after the game? All the fans left.",
+    "Why did the tomato turn red? Because it saw the salad dressing.",
+    "Why did the bicycle fall over? It was two-tired.",
+    "I asked the librarian if the library had books on paranoia. She whispered, 'They're right behind you.'",
+    "Why did the cookie go to the hospital? Because he felt crummy.",
+    "I’m reading a horror book in braille. Something bad is going to happen, I can feel it.",
+    "Why don’t vampires attack Taylor Swift? She has bad blood.",
+    "Why was the math lecture so long? The teacher kept going off on a tangent.",
+    "Why did the computer go to the doctor? It caught a virus.",
+    "Why do cows wear bells? Because their horns don’t work.",
+    "Why did the chicken join a band? Because it had the drumsticks.",
+    "I told a joke about chemistry, but there was no reaction.",
+    "Why did the stadium get hot? Because all the fans left.",
+    "What do you call a factory that makes good products? A satisfactory.",
+    "Why do seagulls fly over the ocean? Because if they flew over the bay, they'd be bagels.",
+    "Why did the banana go to the doctor? Because it wasn’t peeling well.",
+    "Why did the scarecrow get promoted? He was outstanding in his field.",
+    "Why don't programmers like nature? Too many bugs.",
+    "Why did the hipster burn his mouth? He drank his coffee before it was cool.",
+    "I told my friend she was drawing her eyebrows too high. She seemed surprised.",
+    "Why did the stadium get wet? Because the fans left.",
+    "Why was the stadium so cold? Because it was full of fans.",
+    "Why did the picture go to jail? It was framed.",
+    "Why was the belt arrested? It held up a pair of pants.",
+    "Why was the calendar popular? It had a lot of dates.",
+    "Why do bees hum? Because they don't know the words.",
+    "Why did the man put his money in the freezer? He wanted cold hard cash.",
+    "Why did the mushroom go to the party alone? Because he’s a fungi.",
+    "Why did the computer go to the doctor? It had a virus.",
+    "Why don’t crabs give to charity? Because they’re shellfish."
   ],
-  love:[
-    "I love you more than coffee… but please don’t make me prove it ☕❤️",
-    "Are you a magician? Because whenever I look at you, everyone else disappears ✨",
-    "Love is like Wi-Fi, sometimes weak, sometimes strong 📶",
-    "You must be a keyboard, because you’re just my type ⌨️❤️",
-    "I love you a latte ☕💖",
-    "You stole my heart, but I’ll let it slide ❤️",
-    "Are you made of copper and tellurium? Because you’re Cu-Te 🧪❤️",
-    "You must be tired… from running through my mind all day 🏃‍♂️💭",
-    "Even my dog loves you 🐶❤️",
-    "You’re the cheese to my macaroni 🧀❤️",
-    "If kisses were snow, I’d send you a blizzard ❄️💋",
-    "I love you more than Netflix… and that’s serious 🎬❤️",
-    "You’re my favorite notification 🔔❤️",
-    "Are you a loan? Because you have my interest 💸❤️",
-    "I’d pause my game for you 🎮❤️",
-    "Love you like a smartphone loves Wi-Fi 📱❤️",
-    "If I had a star for every time you made me smile, I’d have a galaxy 🌌❤️",
-    "You complete my puzzle 🧩❤️",
-    "You’re my Sunday morning ☀️❤️",
-    "Even coffee tastes better with you ☕❤️",
-    "You had me at hello 👋❤️",
-    "Our love is like HTML, strong and structured 💻❤️",
-    "I’d travel to Mars just to see you 🌌❤️",
-    "You’re the reason my heart skips a beat 💓",
-    "Every day with you is a new adventure 🌍❤️",
-    "You light up my world like electricity ⚡❤️",
-    "I love you more than pizza… and that’s saying a lot 🍕❤️",
-    "You’re the peanut butter to my jelly 🥜❤️",
-    "I’d share my last cookie with you 🍪❤️",
-    "You’re the sunshine in my cloud ☁️☀️",
-    "I’m stuck on you like glue 🖇️❤️",
-    "You’re my favorite distraction 📱❤️",
-    "I love you more than sleep… and that’s huge 😴❤️",
-    "You’re my happy place 🏖️❤️",
-    "I can’t wait to annoy you forever 😜❤️",
-    "You’re the rhythm to my heart 🎵❤️",
-    "Even Mondays are better with you 🌞❤️",
-    "You’re my Wi-Fi signal in life’s chaos 📶❤️",
-    "You’re sweeter than chocolate 🍫❤️",
-    "I love you to the moon and back 🌙❤️",
-    "You make my heart race without coffee ☕❤️",
-    "You’re the spark in my life ✨❤️",
-    "I’d pick you over dessert any day 🍰❤️",
-    "You’re my favorite human ❤️",
-    "You make even chores fun 🧹❤️",
-    "You’re my everything ❤️",
-    "I love you more than words can express ❤️",
-    "You’re the jelly to my toast 🍞❤️",
-    "Even my cat likes you 🐱❤️",
-    "You’re my reason to smile every day 😁❤️",
-    "I love you more than memes 😂❤️",
-    "You make life delicious 🍕❤️"
+  love: [
+    "Love is when your happiness depends on someone else’s smile ❤️",
+    "Love is sharing fries even when you said you weren’t hungry 🍟",
+    "Love is arguing over food and still ordering extra 😄",
+    "Love makes ordinary moments feel magical ✨",
+    "Love is finding comfort in someone’s silence 💕",
+    "Love is choosing the same person every day 💖",
+    "Love is laughing at jokes that aren’t funny 😍",
+    "Love is staying even when it’s hard 💗",
+    "Love is a warm hug on a cold day 🤗",
+    "Love is caring without conditions ❤️",
+    "Love is seeing the good even on bad days 🌈",
+    "Love is being weird together 😜",
+    "Love is knowing someone’s favorite snack 🍫",
+    "Love is patience mixed with trust 💞",
+    "Love is late-night talks 🌙",
+    "Love is feeling safe in someone’s arms 🤍",
+    "Love is growing together 🌱",
+    "Love is choosing understanding over ego 💘",
+    "Love is listening, not just hearing 💓",
+    "Love is missing someone before they leave 😌",
+    "Love is support without judgment 💕",
+    "Love is holding hands through storms 🌧️",
+    "Love is a smile that feels like home 🏡",
+    "Love is saying ‘I’m here’ and meaning it ❤️",
+    "Love is celebrating small wins together 🎉",
+    "Love is knowing when to speak and when to hug 🤗",
+    "Love is trusting with your heart 💖",
+    "Love is imperfect but real 💗",
+    "Love is choosing kindness daily 🌸",
+    "Love is remembering little details 💭",
+    "Love is forgiving and healing 💞",
+    "Love is comfort food for the soul 🍲",
+    "Love is laughter after tears 😂",
+    "Love is presence over presents 🎁",
+    "Love is feeling complete, not owned 💓",
+    "Love is growth, not control 🌱",
+    "Love is showing up ❤️",
+    "Love is calm in chaos 🌊",
+    "Love is holding on gently 🤍",
+    "Love is mutual respect 💕",
+    "Love is being understood 💘",
+    "Love is choosing us 💑",
+    "Love is warmth without words 🔥",
+    "Love is hope 💖",
+    "Love is effort 💗",
+    "Love is honesty 💞",
+    "Love is teamwork 🤝",
+    "Love is peace 🕊️",
+    "Love is you and me ❤️"
   ],
-  romantic:[
-    "I fall for you every day… and it’s not even an accident ❤️",
-    "You’re the poetry in my life ✨",
-    "Being with you feels like home 🏡❤️",
-    "Your smile is my favorite sunrise 🌅❤️",
-    "You’re my heart’s playlist 🎶❤️",
-    "Every love song reminds me of you 🎵❤️",
-    "Your eyes have a galaxy I want to explore 🌌❤️",
-    "I’d write a thousand letters just to see you smile ✉️❤️",
-    "With you, every moment is magic ✨❤️",
-    "You make ordinary moments extraordinary 🌟❤️",
-    "I love you beyond stars and time 🌙❤️",
-    "Every heartbeat says your name 💓❤️",
-    "I’m lost in your love, and I don’t want to be found 💞",
-    "You’re my forever and always 💖",
-    "Your touch is my favorite sensation ✨❤️",
-    "You’re my happily ever after 🌸❤️",
-    "I’m addicted to your love 💕",
-    "Every thought of you makes me smile 😍",
-    "You complete me in ways I can’t explain 💞",
-    "I’d cross oceans for you 🌊❤️",
-    "You’re my sunshine on cloudy days ☁️☀️",
-    "Your laughter is my favorite melody 🎶❤️",
-    "Being with you feels like a dream 💭❤️",
-    "I love the way your hand fits perfectly in mine ✋❤️",
-    "You’re the calm to my storm ⛈️❤️",
-    "With you, life is sweeter 🍬❤️",
-    "I fall asleep with your name on my lips 💋",
-    "You’re my inspiration every day ✨❤️",
-    "I’d chase the stars just to be near you 🌠❤️",
-    "You’re my reason for everything 💖",
-    "Every kiss from you is a treasure 💋❤️",
-    "I love you more than yesterday, but less than tomorrow ❤️",
-    "You make my heart race without trying 🏃‍♂️❤️",
-    "I’m yours, forever and always 💞",
-    "You’re my favorite hello and hardest goodbye 👋❤️",
-    "Your love is my anchor ⚓❤️",
-    "You’re the dream I never want to wake from 🌙❤️",
-    "Being with you is my greatest adventure 🌍❤️",
-    "You’re my heart’s home 🏡❤️",
-    "I’m enchanted by you ✨❤️",
-    "You’re my muse for every poem I write 📝❤️",
-    "I love you in ways words can’t capture 💖",
-    "You’re my morning coffee and sunset skies ☕🌅❤️",
-    "I’m mesmerized by your soul ✨❤️",
-    "Every day with you is a blessing 🙏❤️",
-    "You’re my forever love 💞",
-    "I’d choose you in every lifetime 💖",
-    "You’re my heart’s compass 🧭❤️",
-    "Being near you feels like magic ✨❤️",
-    "You’re the missing piece to my puzzle 🧩❤️",
-    "I love you more than anything in this world 🌎❤️"
+  romantic: [
+    "You are my favorite thought before sleep 🌙",
+    "Every love song makes sense because of you 🎶",
+    "You make my heart smile 💘",
+    "With you, love feels easy ❤️",
+    "Your presence feels like home 🏡",
+    "I’d choose you in every lifetime 💫",
+    "You are my calm in chaos 🌹",
+    "Your smile is my favorite view 😍",
+    "I fell for you without realizing it 💕",
+    "You are my forever kind of moment ♾️",
+    "I love how you make ordinary days special ✨",
+    "Your love feels like poetry 📖",
+    "I’d hold your hand anywhere 💑",
+    "You are my heart’s favorite place ❤️",
+    "I smile more because of you 😊",
+    "Your love feels safe 💞",
+    "I’d rather be with you than anywhere else 🌍",
+    "You are my always 💖",
+    "My heart recognizes yours 💓",
+    "I love the way you exist 🌸",
+    "You make my soul feel warm 🔥",
+    "You are my sweetest habit 💘",
+    "I see my future in your eyes 👀",
+    "Your love feels like magic ✨",
+    "I’d cross any distance for you 🌌",
+    "You are my once-in-a-lifetime 💫",
+    "I choose you, every day ❤️",
+    "Your name sounds like happiness 😊",
+    "You are my favorite hello 💕",
+    "You are my hardest goodbye 💔",
+    "Your love completes me 💞",
+    "You make my heart feel brave 💓",
+    "I fall for you again every day 🌹",
+    "You are my safe place 🏡",
+    "I love you more than yesterday 💖",
+    "Your love feels like sunlight ☀️",
+    "You are my miracle ✨",
+    "My heart whispers your name 💘",
+    "I’m grateful for your love 🙏",
+    "You make love feel real ❤️",
+    "You are my sweetest dream 🌙",
+    "Your love feels timeless ⏳",
+    "You are my heart’s promise 💍",
+    "I love how you love me 💕",
+    "You are my favorite forever ♾️",
+    "I’m yours, completely 💖",
+    "Your love is my treasure 💎",
+    "You make my world softer 🌸",
+    "I love you — simply, deeply ❤️"
   ]
 };
 
-function setCategory(cat){ playSound(); currentCategory=cat; getJoke(); }
+// Sounds
+const soundFunny = document.getElementById("soundFunny");
+const soundLove = document.getElementById("soundLove");
+const soundRomantic = document.getElementById("soundRomantic");
+
+// Functions
+function setCategory(cat){ currentCategory=cat; getJoke(); }
 function getJoke(){
   const arr=jokes[currentCategory];
-  if(!arr||arr.length===0){ jokeDiv.innerText="No jokes found 😅"; return; }
+  if(!arr || arr.length===0){ jokeDiv.innerText="No jokes found 😅"; return; }
   const idx=Math.floor(Math.random()*arr.length);
   jokeDiv.innerText=arr[idx];
   jokeDiv.scrollTop=0;
   playSound();
-  createHearts(); createGlitter();
+  if(currentCategory!=="funny"){ createHearts(); createGlitter(); }
 }
-function playSound(){ sound.currentTime=0; sound.play(); }
-function copyJoke(){ playSound(); navigator.clipboard.writeText(jokeDiv.innerText).then(()=>alert("Joke copied! 📋")); }
-function shareJoke(){
-  playSound();
-  if(navigator.share){ navigator.share({title:"Joke App",text:jokeDiv.innerText}); }
-  else{ navigator.clipboard.writeText(jokeDiv.innerText); alert("Joke copied for sharing! 📋"); }
+function playSound(){
+  if(currentCategory==="funny"){ soundFunny.currentTime=0; soundFunny.play(); }
+  else if(currentCategory==="love"){ soundLove.currentTime=0; soundLove.play(); }
+  else if(currentCategory==="romantic"){ soundRomantic.currentTime=0; soundRomantic.play(); }
 }
-function toggleDark(){ playSound(); document.body.classList.toggle("dark"); }
+function copyJoke(){ navigator.clipboard.writeText(jokeDiv.innerText).then(()=>alert("Joke copied! 📋")); }
+function shareJoke(){ if(navigator.share) navigator.share({title:"😂 Joke App",text:jokeDiv.innerText}); }
+function toggleDark(){ document.body.classList.toggle("dark"); }
 
 function createHearts(){
   for(let i=0;i<5;i++){
@@ -340,8 +350,8 @@ function createGlitter(){
 
 // Swipe up to get joke
 let startY;
-jokeDiv.addEventListener("touchstart",e=>{ startY=e.touches[0].clientY; });
-jokeDiv.addEventListener("touchend",e=>{
+document.getElementById("joke").addEventListener("touchstart",e=>{ startY=e.touches[0].clientY; });
+document.getElementById("joke").addEventListener("touchend",e=>{
   let endY=e.changedTouches[0].clientY;
   if(startY-endY>50){ getJoke(); }
 });
