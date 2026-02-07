@@ -5,6 +5,7 @@
 <title>😂 Joke App</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
+/* General styles */
 body {
   margin:0; padding:0;
   font-family: Arial, sans-serif;
@@ -50,6 +51,7 @@ h1 { font-size:22px; margin:10px 0; text-shadow:1px 1px 2px #999; }
   text-align:left; line-height:1.4; scroll-behavior:smooth;
   box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
   position:relative;
+  overflow:hidden;
 }
 body.dark #joke { background:#333; color:#fff; }
 
@@ -65,6 +67,7 @@ body.dark #joke { background:#333; color:#fff; }
   100% { opacity:0; transform:translate(calc(100px*var(--randX)),-50px) scale(0.5);}
 }
 
+/* Buttons */
 button {
   padding:14px; border:none; border-radius:15px;
   background: linear-gradient(145deg,#ff758c,#ff7eb3);
@@ -86,6 +89,7 @@ button:active { transform:scale(0.96); }
 .footer { font-size:12px; color:#888; margin-top:10px; }
 .credit { font-size:8px; color:#aaa; position:absolute; bottom:5px; left:0; width:100%; text-align:center; }
 
+/* Floating hearts */
 .heart {
   position:absolute; color:#ff4e50; font-size:24px; pointer-events:none;
   opacity:0; transform:translateY(0) scale(1); animation: float linear forwards;
@@ -99,7 +103,6 @@ button:active { transform:scale(0.96); }
 #joke::-webkit-scrollbar-track { background:#f0f0f0; border-radius:3px; }
 #joke::-webkit-scrollbar-thumb { background:#667eea; border-radius:3px; }
 #joke::-webkit-scrollbar-thumb:hover { background:#764ba2; }
-
 </style>
 </head>
 <body>
@@ -130,66 +133,64 @@ button:active { transform:scale(0.96); }
 </audio>
 
 <script>
-// Get elements
+// DOM Elements
 const jokeDiv = document.getElementById("joke");
 const sound = document.getElementById("sound");
 let currentCategory = "funny";
 
 // All 150 jokes
 const jokes = {
-  funny: [
-    "I tried to be funny once… even my mirror laughed at me 😂",
-    "I put my phone on silent and my life finally had peace 😄",
-    "My brain has too many tabs open… and one is playing music 🎵",
-    "I told my computer I needed a break, now it won’t stop sending me KitKat ads 🍫",
-    "Why don’t secrets last long? Because someone always hits 'share' 🤣",
-    "I run on coffee, sarcasm, and bad decisions ☕",
-    "Life is short. Smile while you still have teeth 😁",
-    "I started exercising… my fingers on the keyboard 💻",
-    "I’m not lazy, I’m on energy-saving mode 😴",
-    "I talk to myself because sometimes I need expert advice 🤓",
-    "I wanted abs, but I found snacks instead 🍔",
-    "My bed and I are in a committed relationship 🛏️",
-    "I used to think I was indecisive… now I’m not too sure 🤔",
-    "I don’t rise and shine, I caffeinate and hope ☕",
-    "Why be moody when you can shake your booty 💃",
-    "I tried dieting but cake called my name 🎂",
-    "I’m on a seafood diet — I see food and eat it 🍕",
-    "If stress burned calories, I’d be a supermodel 😅",
-    "I put the pro in procrastinate ⏳",
-    "My wallet is like an onion, opening it makes me cry 😭",
-    "I downloaded a fitness app… then deleted it 🏃",
-    "I talk to my dog more than humans 🐕",
-    "My brain left the chat 💬",
-    "I don’t need Google, my mom knows everything 😆",
-    "Why fall in love when you can fall asleep 😴",
-    "I tried being normal once — worst two minutes of my life 😂",
-    "If at first you don’t succeed, then skydiving is not for you 🪂",
-    "I whisper to my Wi-Fi router for better connection 📶",
-    "I’m great at multitasking: I can waste time in many ways 😜",
-    "My sense of direction is sponsored by wrong turns 🚦",
-    "I wake up tired, go to bed tired — it’s a talent 😴",
-    "I smile because I have no idea what’s going on 😄",
-    "My phone battery lasts longer than my motivation 🔋",
-    "I put my phone down to sleep… didn’t work 📱",
-    "I tried adulting, I need a refund 💸",
-    "I don’t snore, I dream I’m a motorcycle 🏍️",
-    "I laugh at my own jokes so you don’t have to 😂",
-    "I eat cake because it’s somebody’s birthday somewhere 🎉",
-    "I opened a book… accidentally 📚",
-    "I’m not arguing, I’m just explaining why I’m right 😎",
-    "My life feels like a test I didn’t study for 📝",
-    "I planned to be productive… tomorrow 😆",
-    "I don’t sweat, I sparkle ✨",
-    "I woke up like this… tired 😴",
-    "I’m not messy, I have a creative organization system 🎨",
-    "I told my alarm to stop, it didn’t listen ⏰",
-    "I need six months of vacation, twice a year 🏖️",
-    "I eat snacks like meals 🍿",
-    "I have a degree in overthinking 🤯",
-    "I tried to be cool, but I overheated 🔥"
+  funny:[
+    "Why did the scarecrow win an award? Because he was outstanding in his field!",
+    "I told my wife she was drawing her eyebrows too high. She looked surprised.",
+    "Why don’t scientists trust atoms? Because they make up everything!",
+    "I’m reading a book about anti-gravity. It’s impossible to put down.",
+    "Why did the math book look sad? Because it had too many problems.",
+    "I would tell you a joke about construction, but I'm still working on it.",
+    "Why don’t skeletons fight each other? They don’t have the guts.",
+    "I asked my dog what's two minus two. He said nothing.",
+    "Why did the coffee file a police report? It got mugged.",
+    "What do you call fake spaghetti? An impasta.",
+    "How does a penguin build its house? Igloos it together.",
+    "Why was the broom late? It overswept.",
+    "What do you call cheese that isn't yours? Nacho cheese.",
+    "Why can't your nose be 12 inches long? Because then it would be a foot.",
+    "Why did the golfer bring two pairs of pants? In case he got a hole in one.",
+    "I told my computer I needed a break, and it said 'No problem, I’ll go to sleep.'",
+    "Why don’t oysters share their pearls? Because they’re shellfish.",
+    "I tried to catch fog yesterday. Mist.",
+    "Why was the stadium so hot after the game? All the fans left.",
+    "Why did the tomato turn red? Because it saw the salad dressing.",
+    "Why did the bicycle fall over? It was two-tired.",
+    "I asked the librarian if the library had books on paranoia. She whispered, 'They're right behind you.'",
+    "Why did the cookie go to the hospital? Because he felt crummy.",
+    "I’m reading a horror book in braille. Something bad is going to happen, I can feel it.",
+    "Why don’t vampires attack Taylor Swift? She has bad blood.",
+    "Why was the math lecture so long? The teacher kept going off on a tangent.",
+    "Why did the computer go to the doctor? It caught a virus.",
+    "Why do cows wear bells? Because their horns don’t work.",
+    "Why did the chicken join a band? Because it had the drumsticks.",
+    "I told a joke about chemistry, but there was no reaction.",
+    "Why did the stadium get hot? Because all the fans left.",
+    "What do you call a factory that makes good products? A satisfactory.",
+    "Why do seagulls fly over the ocean? Because if they flew over the bay, they'd be bagels.",
+    "Why did the banana go to the doctor? Because it wasn’t peeling well.",
+    "Why did the scarecrow get promoted? He was outstanding in his field.",
+    "Why don't programmers like nature? Too many bugs.",
+    "Why did the hipster burn his mouth? He drank his coffee before it was cool.",
+    "I told my friend she was drawing her eyebrows too high. She seemed surprised.",
+    "Why did the stadium get wet? Because the fans left.",
+    "Why was the stadium so cold? Because it was full of fans.",
+    "Why did the picture go to jail? It was framed.",
+    "Why was the belt arrested? It held up a pair of pants.",
+    "Why was the calendar popular? It had a lot of dates.",
+    "Why do bees hum? Because they don't know the words.",
+    "Why did the man put his money in the freezer? He wanted cold hard cash.",
+    "Why did the mushroom go to the party alone? Because he’s a fungi.",
+    "Why did the computer go to the doctor? It had a virus.",
+    "Why don’t crabs give to charity? Because they’re shellfish."
   ],
-  love: [
+  love:[
     "Love is when your happiness depends on someone else’s smile ❤️",
     "Love is sharing fries even when you said you weren’t hungry 🍟",
     "Love is arguing over food and still ordering extra 😄",
@@ -240,7 +241,7 @@ const jokes = {
     "Love is peace 🕊️",
     "Love is you and me ❤️"
   ],
-  romantic: [
+  romantic:[
     "You are my favorite thought before sleep 🌙",
     "Every love song makes sense because of you 🎶",
     "You make my heart smile 💘",
@@ -294,17 +295,15 @@ const jokes = {
 };
 
 // Functions
-function setCategory(cat){ currentCategory=cat; getJoke(); }
+function setCategory(cat) { currentCategory = cat; getJoke(); }
 function getJoke(){
   const arr = jokes[currentCategory];
-  if(!arr || arr.length===0){
-    jokeDiv.innerText = "No jokes found 😅"; return;
-  }
+  if(!arr || arr.length === 0){ jokeDiv.innerText="No jokes found 😅"; return; }
   const idx = Math.floor(Math.random()*arr.length);
   jokeDiv.innerText = arr[idx];
-  jokeDiv.scrollTop=0;
+  jokeDiv.scrollTop = 0;
   playSound();
-  if(currentCategory!=="funny"){ createHearts(); createGlitter(); }
+  if(currentCategory !== "funny"){ createHearts(); createGlitter(); }
 }
 function playSound(){ sound.currentTime=0; sound.play(); }
 function copyJoke(){ navigator.clipboard.writeText(jokeDiv.innerText).then(()=>alert("Joke copied! 📋")); }
@@ -323,6 +322,8 @@ function createHearts(){
     setTimeout(()=>heart.remove(),2500);
   }
 }
+
+// Glitter
 function createGlitter(){
   for(let i=0;i<10;i++){
     const g=document.createElement("div");
@@ -335,14 +336,13 @@ function createGlitter(){
   }
 }
 
-// Swipe up
+// Swipe up to get joke
 let startY;
-jokeDiv.addEventListener("touchstart",e=>{ startY=e.touches[0].clientY; });
-jokeDiv.addEventListener("touchend",e=>{
+jokeDiv.addEventListener("touchstart", e => { startY=e.touches[0].clientY; });
+jokeDiv.addEventListener("touchend", e => {
   let endY=e.changedTouches[0].clientY;
   if(startY-endY>50){ getJoke(); }
 });
-
 </script>
 </body>
 </html>
