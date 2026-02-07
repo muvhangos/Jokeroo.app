@@ -2,10 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title> Joke App</title>
+<title>Joke App</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-/* General Body */
 body {
   margin:0; padding:0;
   font-family: Arial, sans-serif;
@@ -16,7 +15,6 @@ body {
 }
 body.dark { background: linear-gradient(135deg,#111,#333); color:#fff; }
 
-/* Phone */
 .phone {
   width: 340px; height: 620px; 
   background: linear-gradient(145deg,#fff,#e0e0e0);
@@ -29,10 +27,8 @@ body.dark { background: linear-gradient(135deg,#111,#333); color:#fff; }
   overflow:hidden;
 }
 
-/* Notch */
 .notch { width:120px; height:20px; background:#111; border-radius:0 0 15px 15px; margin:0 auto 10px; }
 
-/* Screen */
 .screen {
   background: linear-gradient(to bottom, #fff,#f0f0f0);
   flex:1; border-radius:25px;
@@ -43,10 +39,8 @@ body.dark { background: linear-gradient(135deg,#111,#333); color:#fff; }
 }
 body.dark .screen { background:#1f1f1f; color:#fff; box-shadow: inset 0 0 20px rgba(255,255,255,0.1); }
 
-/* Heading */
 h1 { font-size:22px; margin:10px 0; text-shadow:1px 1px 2px #999; }
 
-/* Joke box */
 #joke {
   font-size:16px; padding:15px; 
   background: linear-gradient(145deg,#fff,#f9f9f9);
@@ -56,10 +50,22 @@ h1 { font-size:22px; margin:10px 0; text-shadow:1px 1px 2px #999; }
   text-align:left; line-height:1.4; scroll-behavior:smooth;
   box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
   position:relative;
+  overflow:hidden;
 }
 body.dark #joke { background:#333; color:#fff; }
 
-/* Buttons */
+/* Glitter animation */
+.glitter {
+  position:absolute; width:4px; height:4px; background:rgba(255,255,255,0.9);
+  border-radius:50%; pointer-events:none;
+  animation: glitterMove 2s linear infinite;
+}
+@keyframes glitterMove {
+  0% { opacity:0; transform:translate(0,0) scale(1);}
+  50% { opacity:1; transform:translate(calc(50px*var(--randX)),-20px) scale(1.2);}
+  100% { opacity:0; transform:translate(calc(100px*var(--randX)),-50px) scale(0.5);}
+}
+
 button {
   padding:14px; border:none; border-radius:15px;
   background: linear-gradient(145deg,#ff758c,#ff7eb3);
@@ -78,11 +84,9 @@ button:active { transform:scale(0.96); }
   font-size:12px; padding:8px; background:#444; flex:1; border-radius:12px; color:white;
 }
 
-/* Footer and credits */
 .footer { font-size:12px; color:#888; margin-top:10px; }
 .credit { font-size:8px; color:#aaa; position:absolute; bottom:5px; left:0; width:100%; text-align:center; }
 
-/* Floating hearts */
 .heart {
   position:absolute; color:#ff4e50; font-size:24px; pointer-events:none;
   opacity:0; transform:translateY(0) scale(1); animation: float linear forwards;
@@ -92,19 +96,6 @@ button:active { transform:scale(0.96); }
   100% { opacity:0; transform: translateY(-300px) scale(1.5) rotate(360deg); }
 }
 
-/* Glitter animation */
-.glitter {
-  position:absolute; width:4px; height:4px; background:rgba(255,255,255,0.9);
-  border-radius:50%; pointer-events:none;
-  animation: glitterMove 2s linear infinite;
-}
-@keyframes glitterMove {
-  0% { opacity:0; transform:translate(0,0) scale(1);}
-  50% { opacity:1; transform:translate(calc(50px*var(--randX)),-20px) scale(1.2);}
-  100% { opacity:0; transform:translate(calc(100px*var(--randX)),-50px) scale(0.5);}
-}
-
-/* Scrollbar */
 #joke::-webkit-scrollbar { width:6px; }
 #joke::-webkit-scrollbar-track { background:#f0f0f0; border-radius:3px; }
 #joke::-webkit-scrollbar-thumb { background:#667eea; border-radius:3px; }
@@ -115,7 +106,7 @@ button:active { transform:scale(0.96); }
 <div class="phone">
   <div class="notch"></div>
   <div class="screen">
-    <h1 Joke App</h1>
+    <h1>Joke App</h1>
     <div id="joke">Tap for a joke! 😄</div>
 
     <button onclick="getJoke()">Get Joke</button>
@@ -134,67 +125,72 @@ button:active { transform:scale(0.96); }
   </div>
 </div>
 
-<!-- Sounds -->
-<audio id="soundFunny" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
-<audio id="soundLove" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
-<audio id="soundRomantic" src="https://actions.google.com/sounds/v1/cartoon/slide_whistle_to_drum.ogg"></audio>
+<!-- Multiple sounds -->
+<audio id="sound1" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
+<audio id="sound2" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
+<audio id="sound3" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
 
 <script>
-// DOM Elements
 const jokeDiv = document.getElementById("joke");
 let currentCategory = "funny";
 
-// All 150 jokes
+const sounds = [
+  document.getElementById("sound1"),
+  document.getElementById("sound2"),
+  document.getElementById("sound3")
+];
+
+// 150 jokes divided in 3 categories (50 each)
 const jokes = {
   funny: [
-    "Why did the scarecrow win an award? Because he was outstanding in his field!",
-    "I told my wife she was drawing her eyebrows too high. She looked surprised.",
-    "Why don’t scientists trust atoms? Because they make up everything!",
-    "I’m reading a book about anti-gravity. It’s impossible to put down.",
-    "Why did the math book look sad? Because it had too many problems.",
-    "I would tell you a joke about construction, but I'm still working on it.",
-    "Why don’t skeletons fight each other? They don’t have the guts.",
-    "I asked my dog what's two minus two. He said nothing.",
-    "Why did the coffee file a police report? It got mugged.",
-    "What do you call fake spaghetti? An impasta.",
-    "How does a penguin build its house? Igloos it together.",
-    "Why was the broom late? It overswept.",
-    "What do you call cheese that isn't yours? Nacho cheese.",
-    "Why can't your nose be 12 inches long? Because then it would be a foot.",
-    "Why did the golfer bring two pairs of pants? In case he got a hole in one.",
-    "I told my computer I needed a break, and it said 'No problem, I’ll go to sleep.'",
-    "Why don’t oysters share their pearls? Because they’re shellfish.",
-    "I tried to catch fog yesterday. Mist.",
-    "Why was the stadium so hot after the game? All the fans left.",
-    "Why did the tomato turn red? Because it saw the salad dressing.",
-    "Why did the bicycle fall over? It was two-tired.",
-    "I asked the librarian if the library had books on paranoia. She whispered, 'They're right behind you.'",
-    "Why did the cookie go to the hospital? Because he felt crummy.",
-    "I’m reading a horror book in braille. Something bad is going to happen, I can feel it.",
-    "Why don’t vampires attack Taylor Swift? She has bad blood.",
-    "Why was the math lecture so long? The teacher kept going off on a tangent.",
-    "Why did the computer go to the doctor? It caught a virus.",
-    "Why do cows wear bells? Because their horns don’t work.",
-    "Why did the chicken join a band? Because it had the drumsticks.",
-    "I told a joke about chemistry, but there was no reaction.",
-    "Why did the stadium get hot? Because all the fans left.",
-    "What do you call a factory that makes good products? A satisfactory.",
-    "Why do seagulls fly over the ocean? Because if they flew over the bay, they'd be bagels.",
-    "Why did the banana go to the doctor? Because it wasn’t peeling well.",
-    "Why did the scarecrow get promoted? He was outstanding in his field.",
-    "Why don't programmers like nature? Too many bugs.",
-    "Why did the hipster burn his mouth? He drank his coffee before it was cool.",
-    "I told my friend she was drawing her eyebrows too high. She seemed surprised.",
-    "Why did the stadium get wet? Because the fans left.",
-    "Why was the stadium so cold? Because it was full of fans.",
-    "Why did the picture go to jail? It was framed.",
-    "Why was the belt arrested? It held up a pair of pants.",
-    "Why was the calendar popular? It had a lot of dates.",
-    "Why do bees hum? Because they don't know the words.",
-    "Why did the man put his money in the freezer? He wanted cold hard cash.",
-    "Why did the mushroom go to the party alone? Because he’s a fungi.",
-    "Why did the computer go to the doctor? It had a virus.",
-    "Why don’t crabs give to charity? Because they’re shellfish."
+    "Why did the scarecrow win an award? Because he was outstanding in his field! 😂",
+    "I told my wife she was drawing her eyebrows too high. She looked surprised 😆",
+    "Why don’t scientists trust atoms? Because they make up everything 🤣",
+    "I’m reading a book about anti-gravity. It’s impossible to put down 📚",
+    "Why did the math book look sad? Because it had too many problems 😅",
+    "I would tell you a joke about construction, but I'm still working on it 🏗️",
+    "Why don’t skeletons fight each other? They don’t have the guts 💀",
+    "I asked my dog what's two minus two. He said nothing 🐶",
+    "Why did the coffee file a police report? It got mugged ☕",
+    "What do you call fake spaghetti? An impasta 🍝",
+    "How does a penguin build its house? Igloos it together 🐧",
+    "Why was the broom late? It overswept 🧹",
+    "What do you call cheese that isn't yours? Nacho cheese 🧀",
+    "Why can't your nose be 12 inches long? Because then it would be a foot 👃",
+    "Why did the golfer bring two pairs of pants? In case he got a hole in one ⛳",
+    "I told my computer I needed a break, and it said 'No problem, I’ll go to sleep' 💻",
+    "Why don’t oysters share their pearls? Because they’re shellfish 🦪",
+    "I tried to catch fog yesterday. Mist 🌫️",
+    "Why was the stadium so hot after the game? All the fans left 🏟️",
+    "Why did the tomato turn red? Because it saw the salad dressing 🍅",
+    "Why did the bicycle fall over? It was two-tired 🚲",
+    "I asked the librarian if the library had books on paranoia. She whispered, 'They're right behind you' 📚",
+    "Why did the cookie go to the hospital? Because he felt crummy 🍪",
+    "I’m reading a horror book in braille. Something bad is going to happen, I can feel it 😱",
+    "Why don’t vampires attack Taylor Swift? She has bad blood 🧛‍♂️",
+    "Why was the math lecture so long? The teacher kept going off on a tangent ➗",
+    "Why did the computer go to the doctor? It caught a virus 🖥️",
+    "Why do cows wear bells? Because their horns don’t work 🐄",
+    "Why did the chicken join a band? Because it had the drumsticks 🐔",
+    "I told a joke about chemistry, but there was no reaction ⚗️",
+    "Why did the stadium get hot? Because all the fans left 🏟️",
+    "What do you call a factory that makes good products? A satisfactory 🏭",
+    "Why do seagulls fly over the ocean? Because if they flew over the bay, they'd be bagels 🐦",
+    "Why did the banana go to the doctor? Because it wasn’t peeling well 🍌",
+    "Why did the scarecrow get promoted? He was outstanding in his field 🌾",
+    "Why don't programmers like nature? Too many bugs 🐛",
+    "Why did the hipster burn his mouth? He drank his coffee before it was cool ☕",
+    "I told my friend she was drawing her eyebrows too high. She seemed surprised 😲",
+    "Why did the stadium get wet? Because the fans left 🏟️",
+    "Why was the stadium so cold? Because it was full of fans 🧊",
+    "Why did the picture go to jail? It was framed 🖼️",
+    "Why was the belt arrested? It held up a pair of pants 👖",
+    "Why was the calendar popular? It had a lot of dates 📅",
+    "Why do bees hum? Because they don't know the words 🐝",
+    "Why did the man put his money in the freezer? He wanted cold hard cash 💰",
+    "Why did the mushroom go to the party alone? Because he’s a fungi 🍄",
+    "Why did the computer go to the doctor? It had a virus 🖥️",
+    "Why don’t crabs give to charity? Because they’re shellfish 🦀"
   ],
   love: [
     "Love is when your happiness depends on someone else’s smile ❤️",
@@ -300,29 +296,23 @@ const jokes = {
   ]
 };
 
-// Sounds
-const soundFunny = document.getElementById("soundFunny");
-const soundLove = document.getElementById("soundLove");
-const soundRomantic = document.getElementById("soundRomantic");
-
 // Functions
 function setCategory(cat){ currentCategory=cat; getJoke(); }
 function getJoke(){
-  const arr=jokes[currentCategory];
-  if(!arr || arr.length===0){ jokeDiv.innerText="No jokes found 😅"; return; }
-  const idx=Math.floor(Math.random()*arr.length);
-  jokeDiv.innerText=arr[idx];
+  const arr = jokes[currentCategory];
+  if (!arr || arr.length === 0) { jokeDiv.innerText="No jokes 😅"; return; }
+  const idx = Math.floor(Math.random()*arr.length);
+  jokeDiv.innerText = arr[idx];
   jokeDiv.scrollTop=0;
   playSound();
   if(currentCategory!=="funny"){ createHearts(); createGlitter(); }
 }
 function playSound(){
-  if(currentCategory==="funny"){ soundFunny.currentTime=0; soundFunny.play(); }
-  else if(currentCategory==="love"){ soundLove.currentTime=0; soundLove.play(); }
-  else if(currentCategory==="romantic"){ soundRomantic.currentTime=0; soundRomantic.play(); }
+  const s = sounds[Math.floor(Math.random()*sounds.length)];
+  s.currentTime=0; s.play();
 }
 function copyJoke(){ navigator.clipboard.writeText(jokeDiv.innerText).then(()=>alert("Joke copied! 📋")); }
-function shareJoke(){ if(navigator.share) navigator.share({title:"😂 Joke App",text:jokeDiv.innerText}); }
+function shareJoke(){ if(navigator.share) navigator.share({title:"Joke App",text:jokeDiv.innerText}); }
 function toggleDark(){ document.body.classList.toggle("dark"); }
 
 function createHearts(){
@@ -351,13 +341,9 @@ function createGlitter(){
 // Swipe up to get joke
 let startY;
 document.getElementById("joke").addEventListener("touchstart",e=>{ startY=e.touches[0].clientY; });
-document.getElementById("joke").addEventListener("touchend",e=>{
-  let endY=e.changedTouches[0].clientY;
-  if(startY-endY>50){ getJoke(); }
+document.getElementById("joke").addEventListener("touchend",e=>{ 
+  if(startY - e.changedTouches[0].clientY>50) getJoke();
 });
 </script>
 </body>
 </html>
-
-
-
