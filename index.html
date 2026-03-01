@@ -90,8 +90,13 @@ input, textarea { border-radius:8px; border:1px solid #ccc; padding:8px; width:9
     <div id="advertDiv" class="hidden" style="margin-top:10px;">
       <h4>Advertise Your Company</h4>
       <textarea id="advertText" placeholder="Paste your advert here..."></textarea><br>
-      <label>Proof of Payment ($5/day): </label>
+
+      <label>Payment Options:</label><br>
+      <button onclick="payWithPayFast()">💳 Pay with PayFast ($5/day)</button><br><br>
+
+      <label>Or attach Proof of Payment:</label>
       <input type="file" id="proofFile"><br><br>
+
       <button onclick="submitAdvert()">Submit Advert</button>
       <button onclick="closeAdvertForm()">Close</button>
     </div>
@@ -168,14 +173,13 @@ function loadDailyJoke() {
     jokeDiv.innerText = jokes.funny[jokeIndex];
     lastDay = dayNumber;
 }
-
-// Check every minute if the day has changed
 setInterval(() => {
     const today = new Date();
     if(today.getDate() !== lastDay && currentCategory === "funny") {
         loadDailyJoke();
     }
 }, 60000);
+loadDailyJoke();
 
 // Functions
 function setCategory(cat){ currentCategory=cat; getJoke(); }
@@ -201,6 +205,7 @@ jokeDiv.addEventListener("touchend",e=>{ if(startY-e.changedTouches[0].clientY>5
 let adverts=JSON.parse(localStorage.getItem("adverts")||"[]");
 function showAdvertForm(){ document.getElementById("advertDiv").classList.remove("hidden"); }
 function closeAdvertForm(){ document.getElementById("advertDiv").classList.add("hidden"); }
+
 function submitAdvert(){
   const text=document.getElementById("advertText").value.trim();
   if(!text){ alert("Enter advert text"); return; }
@@ -211,11 +216,40 @@ function submitAdvert(){
   alert("Advert submitted & approved! Admin notified at muvhangos@gmail.com");
   displayAdverts(); closeAdvertForm();
 }
+
 function displayAdverts(){
   const div=document.getElementById("advertsDiv"); div.innerHTML="";
   adverts.forEach(a=>{ if(a.approved) div.innerHTML+='<div style="background:#ffe;color:#000;padding:5px;border-radius:8px;margin:5px 0;">'+a.text+'</div>'; });
 }
 displayAdverts();
+
+// PayFast Integration
+function payWithPayFast(){
+    if(!currentUser){ alert("Please register/login first"); return; }
+
+    const text = document.getElementById("advertText").value.trim();
+    if(!text){ alert("Enter advert text before paying"); return; }
+
+    const advertId = Date.now() + "_" + Math.floor(Math.random()*1000);
+    adverts.push({user:currentUser, text, days:1, approved:false, id:advertId});
+    localStorage.setItem("adverts",JSON.stringify(adverts));
+    displayAdverts();
+
+    const merchantId = "10000100"; // Replace with your PayFast Merchant ID
+    const merchantKey = "xxxx"; // Replace with your Merchant Key
+    const returnUrl = "https://yourapp.com/advert-success"; 
+    const cancelUrl = "https://yourapp.com/advert-cancel"; 
+    const notifyUrl = "https://yourserver.com/payfast-ipn"; // Server endpoint
+
+    const amount = 5.00;
+    const itemName = "Jokeroo Advert - 1 day";
+    const customStr = advertId;
+
+    const payUrl = `https://sandbox.payfast.co.za/eng/process?merchant_id=${merchantId}&merchant_key=${merchantKey}&return_url=${encodeURIComponent(returnUrl)}&cancel_url=${encodeURIComponent(cancelUrl)}&notify_url=${encodeURIComponent(notifyUrl)}&amount=${amount}&item_name=${encodeURIComponent(itemName)}&custom_str=${customStr}`;
+
+    window.open(payUrl, "_blank");
+    alert("Payment page opened. Your advert will auto-approve once payment is confirmed.");
+}
 </script>
 </body>
 </html>
