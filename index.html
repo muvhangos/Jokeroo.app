@@ -39,6 +39,8 @@ button:active { transform:scale(0.96);}
 
 .hidden { display:none; }
 input, textarea { border-radius:8px; border:1px solid #ccc; padding:8px; width:90%; margin-bottom:5px;}
+#shareOptions { margin-top:5px; font-size:14px; display:none; text-align:left; }
+#shareOptions a { display:block; margin:3px 0; color:#fff; background:#667eea; padding:5px; border-radius:5px; text-decoration:none; }
 </style>
 </head>
 <body>
@@ -58,14 +60,21 @@ input, textarea { border-radius:8px; border:1px solid #ccc; padding:8px; width:9
 
     <!-- Main App -->
     <div id="appDiv" class="hidden">
-      <div id="joke">Tap for a joke! 😄</div>
+      <div id="joke">Loading daily joke...</div>
 
       <button onclick="getJoke()">Get Joke</button>
-      <button onclick="shareApp()">🔗 Share App</button>
+      <button onclick="toggleShare()">🔗 Share App</button>
+      <div id="shareOptions">
+        <a href="https://wa.me/?text=Check%20out%20Jokeroo%20App!" target="_blank">WhatsApp</a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://yourapp.com" target="_blank">Facebook</a>
+        <a href="https://twitter.com/intent/tweet?text=Check%20out%20Jokeroo%20App!" target="_blank">Twitter</a>
+        <a href="mailto:?subject=Jokeroo App&body=Check out Jokeroo App!" target="_blank">Email</a>
+      </div>
+
       <button onclick="toggleDark()">🌙 Dark</button>
       
       <div class="controls">
-        <button class="small-btn" onclick="setCategory('funny')">😂 Funny</button>
+        <button class="small-btn" onclick="setCategory('funny')">😂 Daily Jokes</button>
         <button class="small-btn" onclick="setCategory('love')">❤️ Love</button>
         <button class="small-btn" onclick="setCategory('romantic')">💖 Romantic</button>
         <button class="small-btn" onclick="showAdvertForm()">📢 Advertise</button>
@@ -116,103 +125,57 @@ const jokeDiv=document.getElementById("joke");
 let currentCategory="funny";
 const sounds=[document.getElementById("sound1"),document.getElementById("sound2"),document.getElementById("sound3")];
 
-// Full jokes arrays
-const jokes={ 
-funny:[ /* All funny jokes as in original HTML */ ],
-love:[
-"Love is when your happiness depends on someone else’s smile ❤️",
-"Love is sharing fries even when you said you weren’t hungry 🍟",
-"Love is arguing over food and still ordering extra 😄",
-"Love makes ordinary moments feel magical ✨",
-"Love is finding comfort in someone’s silence 💕",
-"Love is choosing the same person every day 💖",
-"Love is laughing at jokes that aren’t funny 😍",
-"Love is staying even when it’s hard 💗",
-"Love is a warm hug on a cold day 🤗",
-"Love is caring without conditions ❤️",
-"Love is seeing the good even on bad days 🌈",
-"Love is being weird together 😜",
-"Love is knowing someone’s favorite snack 🍫",
-"Love is patience mixed with trust 💞",
-"Love is late-night talks 🌙",
-"Love is feeling safe in someone’s arms 🤍",
-"Love is growing together 🌱",
-"Love is choosing understanding over ego 💘",
-"Love is listening, not just hearing 💓",
-"Love is missing someone before they leave 😌",
-"Love is support without judgment 💕",
-"Love is holding hands through storms 🌧️",
-"Love is a smile that feels like home 🏡",
-"Love is saying ‘I’m here’ and meaning it ❤️",
-"Love is celebrating small wins together 🎉",
-"Love is knowing when to speak and when to hug 🤗",
-"Love is trusting with your heart 💖",
-"Love is imperfect but real 💗",
-"Love is choosing kindness daily 🌸",
-"Love is remembering little details 💭",
-"Love is forgiving and healing 💞",
-"Love is comfort food for the soul 🍲",
-"Love is laughter after tears 😂",
-"Love is presence over presents 🎁",
-"Love is you and me ❤️",
-"Love is hope 💖",
-"Love is honesty 💞",
-"Love is teamwork 🤝",
-"Love is peace 🕊️",
-"Love is warmth without words 🔥"
-],
-romantic:[
-"You are my favorite thought before sleep 🌙",
-"Every love song makes sense because of you 🎶",
-"You make my heart smile 💘",
-"With you, love feels easy ❤️",
-"Your presence feels like home 🏡",
-"I’d choose you in every lifetime 💫",
-"You are my calm in chaos 🌹",
-"Your smile is my favorite view 😍",
-"I fell for you without realizing it 💕",
-"You are my forever kind of moment ♾️",
-"I love how you make ordinary days special ✨",
-"Your love feels like poetry 📖",
-"I’d hold your hand anywhere 💑",
-"You are my heart’s favorite place ❤️",
-"I smile more because of you 😊",
-"Your love feels safe 💞",
-"I’d rather be with you than anywhere else 🌍",
-"You are my always 💖",
-"My heart recognizes yours 💓",
-"I love the way you exist 🌸",
-"You make my soul feel warm 🔥",
-"You are my sweetest habit 💘",
-"I see my future in your eyes 👀",
-"Your love feels like magic ✨",
-"I’d cross any distance for you 🌌",
-"You are my once-in-a-lifetime 💫",
-"I choose you, every day ❤️",
-"Your name sounds like happiness 😊",
-"You are my favorite hello 💕",
-"You are my hardest goodbye 💔",
-"Your love completes me 💞",
-"You make my heart feel brave 💓",
-"I fall for you again every day 🌹",
-"You are my safe place 🏡",
-"I love you more than yesterday 💖",
-"Your love feels like sunlight ☀️",
-"You are my miracle ✨",
-"My heart whispers your name 💘",
-"I’m grateful for your love 🙏",
-"You make love feel real ❤️",
-"You are my sweetest dream 🌙",
-"Your love feels timeless ⏳",
-"You are my heart’s promise 💍",
-"I love how you love me 💕",
-"You are my favorite forever ♾️",
-"I’m yours, completely 💖",
-"Your love is my treasure 💎",
-"You make my world softer 🌸",
-"I love you — simply, deeply ❤️"
-]
+const jokes = {
+  funny:[
+    "Why don’t programmers like nature? Too many bugs.",
+    "Why did the computer get cold? It forgot to close Windows.",
+    "Why was the JavaScript developer sad? Because he didn’t know how to 'null' his feelings.",
+    "Why did the database admin leave his wife? She had one-to-many relationships.",
+    "Why do programmers prefer dark mode? Because light attracts bugs."
+  ],
+  love:[
+    "Love is when your happiness depends on someone else’s smile ❤️",
+    "Love is sharing fries even when you said you weren’t hungry 🍟",
+    "Love is arguing over food and still ordering extra 😄",
+    "Love makes ordinary moments feel magical ✨",
+    "Love is finding comfort in someone’s silence 💕",
+    "Love is choosing the same person every day 💖",
+    "Love is laughing at jokes that aren’t funny 😍",
+    "Love is staying even when it’s hard 💗",
+    "Love is a warm hug on a cold day 🤗",
+    "Love is caring without conditions ❤️"
+  ],
+  romantic:[
+    "You are my favorite thought before sleep 🌙",
+    "Every love song makes sense because of you 🎶",
+    "You make my heart smile 💘",
+    "With you, love feels easy ❤️",
+    "Your presence feels like home 🏡",
+    "I’d choose you in every lifetime 💫",
+    "You are my calm in chaos 🌹",
+    "Your smile is my favorite view 😍",
+    "I fell for you without realizing it 💕",
+    "You are my forever kind of moment ♾️"
+  ]
 };
+
+// Daily joke auto-update
+let lastDay = new Date().getDate();
+function loadDailyJoke() {
+    const today = new Date();
+    const dayNumber = today.getDate();
+    const jokeIndex = dayNumber % jokes.funny.length;
+    jokeDiv.innerText = jokes.funny[jokeIndex];
+    lastDay = dayNumber;
+}
+
+// Check every minute if the day has changed
+setInterval(() => {
+    const today = new Date();
+    if(today.getDate() !== lastDay && currentCategory === "funny") {
+        loadDailyJoke();
+    }
+}, 60000);
 
 // Functions
 function setCategory(cat){ currentCategory=cat; getJoke(); }
@@ -224,15 +187,15 @@ function getJoke(){
   if(currentCategory!=="funny"){ createHearts(); createGlitter(); }
 }
 function playSound(){ const s=sounds[Math.floor(Math.random()*sounds.length)]; s.currentTime=0; s.play(); }
-function shareApp(){ if(navigator.share) navigator.share({title:"Jokeroo", text:"Check out Jokeroo App! 😄"}); }
 function toggleDark(){ document.body.classList.toggle("dark"); }
 function createHearts(){ for(let i=0;i<5;i++){ const heart=document.createElement("div"); heart.className="heart"; heart.style.left=Math.random()*90+"%"; heart.style.animationDuration=(Math.random()*2+2)+"s"; heart.innerText="❤️"; document.body.appendChild(heart); setTimeout(()=>heart.remove(),2500); }}
 function createGlitter(){ for(let i=0;i<10;i++){ const g=document.createElement("div"); g.className="glitter"; g.style.left=Math.random()*100+"%"; g.style.top=Math.random()*100+"%"; g.style.setProperty("--randX",Math.random()); document.body.appendChild(g); setTimeout(()=>g.remove(),2000); }}
+function toggleShare(){ const s=document.getElementById("shareOptions"); s.style.display = s.style.display==="none"?"block":"none"; }
 
 // Swipe
 let startY;
-document.getElementById("joke").addEventListener("touchstart",e=>{ startY=e.touches[0].clientY; });
-document.getElementById("joke").addEventListener("touchend",e=>{ if(startY-e.changedTouches[0].clientY>50) getJoke(); });
+jokeDiv.addEventListener("touchstart",e=>{ startY=e.touches[0].clientY; });
+jokeDiv.addEventListener("touchend",e=>{ if(startY-e.changedTouches[0].clientY>50) getJoke(); });
 
 // Advert
 let adverts=JSON.parse(localStorage.getItem("adverts")||"[]");
@@ -256,4 +219,3 @@ displayAdverts();
 </script>
 </body>
 </html>
-
