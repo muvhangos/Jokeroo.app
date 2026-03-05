@@ -131,39 +131,105 @@ let currentCategory="funny";
 const sounds=[document.getElementById("sound1"),document.getElementById("sound2"),document.getElementById("sound3")];
 
 const jokes = {
-  funny:[
-    "Why don’t programmers like nature? Too many bugs.",
-    "Why did the computer get cold? It forgot to close Windows.",
-    "Why was the JavaScript developer sad? Because he didn’t know how to 'null' his feelings.",
-    "Why did the database admin leave his wife? She had one-to-many relationships.",
-    "Why do programmers prefer dark mode? Because light attracts bugs."
-  ],
-  love:[
-    "Love is when your happiness depends on someone else’s smile ❤️",
-    "Love is sharing fries even when you said you weren’t hungry 🍟",
-    "Love is arguing over food and still ordering extra 😄",
-    "Love makes ordinary moments feel magical ✨",
-    "Love is finding comfort in someone’s silence 💕",
-    "Love is choosing the same person every day 💖",
-    "Love is laughing at jokes that aren’t funny 😍",
-    "Love is staying even when it’s hard 💗",
-    "Love is a warm hug on a cold day 🤗",
-    "Love is caring without conditions ❤️"
-  ],
-  romantic:[
-    "You are my favorite thought before sleep 🌙",
-    "Every love song makes sense because of you 🎶",
-    "You make my heart smile 💘",
-    "With you, love feels easy ❤️",
-    "Your presence feels like home 🏡",
-    "I’d choose you in every lifetime 💫",
-    "You are my calm in chaos 🌹",
-    "Your smile is my favorite view 😍",
-    "I fell for you without realizing it 💕",
-    "You are my forever kind of moment ♾️"
-  ]
-};
+funny: [
+"Why don’t programmers like nature? Too many bugs.",
+"Why did the computer get cold? It forgot to close Windows.",
+"Why was the JavaScript developer sad? Because he didn't know how to null his feelings.",
+"Why do programmers prefer dark mode? Because light attracts bugs.",
+"Why did the database admin leave his wife? She had one-to-many relationships.",
+"Why did the developer go broke? Because he used up all his cache.",
+"Why do Java developers wear glasses? Because they don’t C#.",
+"Why did the computer show up at work late? It had a hard drive.",
+"Why was the computer tired when it got home? It had too many tabs open.",
+"Why did the smartphone need glasses? It lost its contacts.",
+"Why did the coder quit his job? Because he didn't get arrays.",
+"Why did the WiFi break up with the computer? Too many connections.",
+"Why did the laptop go to therapy? Too many emotional crashes.",
+"Why did the keyboard break up with the mouse? Too many clicks.",
+"Why was the phone always calm? It had great reception.",
+"Why was the server stressed? Too many requests.",
+"Why did the developer bring a ladder to work? To reach the cloud.",
+"Why did the phone cross the road? To connect to the other network.",
+"Why did the browser go to therapy? Too many cookies.",
+"Why did the computer sneeze? It caught a virus.",
+"Why did the developer stay broke? Because he lost his domain.",
+"Why was the programmer always calm? Because he kept his code clean.",
+"Why did the smartphone go to school? To improve its apps.",
+"Why did the coder love coffee? It helped him debug life.",
+"Why did the internet break up? Too many connections.",
+"Why did the coder sleep late? Because he was coding all night.",
+"Why did the computer laugh? Someone told a byte joke.",
+"Why was the laptop happy? It got a new battery.",
+"Why did the computer go on vacation? It needed to reboot.",
+"Why did the programmer get stuck in the shower? Because the instructions were: lather, rinse, repeat."
+],
 
+love: [
+"Love is when your happiness depends on someone else’s smile ❤️",
+"Love is sharing fries even when you said you weren’t hungry 🍟",
+"Love is choosing the same person every day 💖",
+"Love is laughing at jokes that aren’t funny 😍",
+"Love is staying even when it's hard 💗",
+"Love is a warm hug on a cold day 🤗",
+"Love is caring without conditions ❤️",
+"Love is finding comfort in silence 💞",
+"Love is holding hands without reason 💑",
+"Love is saying goodnight even after a long argument 🌙",
+"Love is small acts of kindness every day 💕",
+"Love is a smile that lasts forever 😊",
+"Love is remembering the little things ❤️",
+"Love is growing together 💑",
+"Love is two hearts beating as one 💓",
+"Love is making someone feel safe 💞",
+"Love is being someone's peace 💕",
+"Love is sharing dreams 💭",
+"Love is never giving up ❤️",
+"Love is supporting each other always 💗",
+"Love is trusting without fear 💞",
+"Love is smiling at their messages 😊",
+"Love is thinking about them all day 💖",
+"Love is late night conversations 🌙",
+"Love is random hugs 🤗",
+"Love is saying 'I miss you' 💕",
+"Love is laughing together ❤️",
+"Love is caring deeply 💓",
+"Love is kindness in action 💞",
+"Love is a forever promise 💖"
+],
+
+romantic: [
+"You are my favorite thought before sleep 🌙",
+"Every love song makes sense because of you 🎶",
+"You make my heart smile 💘",
+"With you, love feels easy ❤️",
+"Your presence feels like home 🏡",
+"I’d choose you in every lifetime 💫",
+"You are my calm in chaos 🌹",
+"Your smile is my favorite view 😍",
+"I fell for you without realizing it 💕",
+"You are my forever kind of moment ♾️",
+"Every moment with you feels magical ✨",
+"You are the best chapter of my life 📖",
+"Your love is my favorite story ❤️",
+"You make ordinary days special 🌹",
+"My heart belongs to you 💘",
+"Your voice is my favorite sound 🎶",
+"You light up my world 💡",
+"I love you more every day 💖",
+"You complete my world 🌎",
+"You are my dream come true 💭",
+"I feel lucky to have you 🍀",
+"Your love gives me strength 💪",
+"Life is better with you 💞",
+"I cherish every moment with you 💓",
+"You are my sunshine ☀️",
+"You are my heart's home 🏡",
+"My love for you grows daily 🌹",
+"You make my world beautiful 💖",
+"I love every moment with you 💘",
+"You are my happiness ❤️"
+]
+};
 // Daily joke auto-update
 let lastDay = new Date().getDate();
 function loadDailyJoke() {
@@ -253,3 +319,4 @@ function payWithPayFast(){
 </script>
 </body>
 </html>
+
